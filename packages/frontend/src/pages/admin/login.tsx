@@ -1,3 +1,4 @@
+import InputPassword from '@prova-livre/frontend/components/InputPassword';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
 import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import { Navigate, useNavigate } from '@prova-livre/frontend/router';
@@ -11,7 +12,6 @@ export default function Page() {
 
   const handleLogin = async (e: RbkFormEvent, data: AnyObject) => {
     try {
-      console.log(status, data);
       await login(data.email, data.password);
       navigate('/admin');
     } catch (err) {
@@ -49,7 +49,7 @@ export default function Page() {
                       />
                     </Box>
                     <Box xs={12}>
-                      <Input secure label="Senha" name="password" placeholder="Digite sua senha" value="123456" />
+                      <InputPassword label="Senha" name="password" placeholder="Digite sua senha" value="123" />
                     </Box>
                     <Box xs={12}>
                       <Button mt="1gap" size="large" type="submit">
