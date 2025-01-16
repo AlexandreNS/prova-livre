@@ -1,4 +1,3 @@
-import type { AuthMeSchema } from '@prova-livre/shared/dtos/admin/auth/auth.dto';
 import type { SchemaRoute } from '@prova-livre/shared/types/schema.type';
 import type { ReactElement } from '@react-bulk/core';
 
@@ -9,6 +8,7 @@ import useLocalStorage from '@prova-livre/frontend/hooks/useLocalStorage';
 import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
 import LocalStorage from '@prova-livre/frontend/services/LocalStorage';
+import { AuthMeSchema } from '@prova-livre/shared/dtos/admin/auth/auth.dto';
 import { Loading } from '@react-bulk/web';
 import { mutate } from 'swr';
 
@@ -46,14 +46,15 @@ export function AdminAuthProvider({ children }: { children?: ReactElement }) {
 
   const [token, setToken] = useLocalStorage<null | string>('token', null);
 
-  const { data: user = null, isLoading: isLoadingUser } = useRequest<SchemaRoute<typeof AuthMeSchema>>(
-    token && '/auth/me',
-    {
-      noCache: true,
-      autoRevalidate: false,
-      retryOnError: false,
-    },
-  );
+  const {
+    data: user = null,
+    isLoading: isLoadingUser,
+    revalidate: revalidateMe,
+  } = useRequest<SchemaRoute<typeof AuthMeSchema>>(token && '/auth/me', {
+    noCache: true,
+    autoRevalidate: false,
+    retryOnError: false,
+  });
 
   const company = user?.company ?? null;
 
@@ -75,6 +76,7 @@ export function AdminAuthProvider({ children }: { children?: ReactElement }) {
     });
 
     setToken(response?.data?.token || null);
+    await revalidateMe();
   }
 
   async function logout() {
