@@ -15,7 +15,9 @@ enum QuestionTypeEnum {
 enum UserRoleEnum {
   owner
   admin
+  editor
   tutor
+  viewer
 }
 
 model Company {
