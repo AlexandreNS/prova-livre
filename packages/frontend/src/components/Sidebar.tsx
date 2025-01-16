@@ -3,7 +3,9 @@ import { useLocation } from 'react-router-dom';
 import Icon, { type IconProps } from '@prova-livre/frontend/components/Icon';
 import LinkChild, { type LinkChildProps } from '@prova-livre/frontend/components/LinkChild';
 import Logo from '@prova-livre/frontend/components/Logo';
+import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import useLayout from '@prova-livre/frontend/hooks/useLayout';
+import { hasPermission } from '@prova-livre/shared/helpers/feature.helper';
 import { Box, Divider, Drawer, ListItem, Scrollable, Text } from '@react-bulk/web';
 
 type MenuGroup = {
@@ -18,6 +20,7 @@ type MenuGroup = {
 };
 
 export default function Sidebar() {
+  const { user } = useAdminAuth();
   const { pathname } = useLocation();
   const { isMobile, drawer } = useLayout();
 
@@ -28,6 +31,17 @@ export default function Sidebar() {
           icon: 'House',
           label: 'Início',
           url: '/admin',
+        },
+      ],
+    },
+    {
+      title: 'Cadastros',
+      menus: [
+        {
+          icon: 'Bookmark',
+          label: 'Categorias',
+          url: '/admin/categories',
+          hidden: !hasPermission(user?.role, 'Category-Read'),
         },
       ],
     },
@@ -83,7 +97,9 @@ export default function Sidebar() {
                           style={[isActive && { bg: 'primary.main.15' }]}
                           onPress={drawer.close}
                         >
-                          <Box>X</Box>
+                          <Box>
+                            <Icon name={menu.icon} size={20} />
+                          </Box>
                           <Box flex>
                             <Text
                               color={isActive ? 'primary' : 'text'}

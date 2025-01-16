@@ -140,11 +140,12 @@ export default function PageHeader({ tabs, title, subtitle, children, onSearch }
               const isActive = tabValue === tab.value;
 
               return (
-                <LinkChild key={index} replace href={`${tabURL}/${tab.value}`}>
+                <LinkChild key={index} replace href={tab.disabled ? '' : `${tabURL}/${tab.value}`}>
                   <Button
                     borderBottom={`3px solid ${isActive ? 'primary' : 'trans'}`}
                     borderBottomLeftRadius={0}
                     borderBottomRightRadius={0}
+                    disabled={tab.disabled}
                     labelStyle={{ color: isActive ? 'primary' : 'text' }}
                     mx={1}
                     size="large"
