@@ -1,0 +1,26 @@
+{
+  "name": "@prova-livre/frontend",
+  "version": "0.0.1",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "@generouted/react-router": "^1.19.6",
+    "@react-bulk/core": "^1.4.3",
+    "@react-bulk/web": "^1.4.3",
+    "axios": "^1.7.2",
+    "dot-object": "^2.1.5",
+    "phosphor-react": "^1.4.1",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "react-router-dom": "^6.25.1",
+    "react-state-hooks": "^1.0.2",
+    "swr": "^2.2.5"
+  },
+  "devDependencies": {
+    "@types/dot-object": "^2.1.6",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.3.4"
+  }
+}

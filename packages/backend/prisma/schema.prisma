@@ -1,0 +1,193 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum QuestionTypeEnum {
+  discursive
+  options
+}
+
+enum UserRoleEnum {
+  owner
+  admin
+  tutor
+}
+
+model Company {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name String
+  slug String? @unique
+
+  userCompanyRoles   UserCompanyRole[]
+  categories         Category[]
+  studentsCompany    StudentCompany[]
+  classes            Class[]
+  classStudents      ClassStudent[]
+  questions          Question[]
+  questionCategories QuestionCategory[]
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name       String?
+  email      String    @unique
+  password   String?   @db.Text
+  accessedAt DateTime?
+
+  userCompanyRoles UserCompanyRole[]
+}
+
+model UserCompanyRole {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  role UserRoleEnum
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+}
+
+model Student {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name       String?
+  email      String    @unique
+  password   String?   @db.Text
+  accessedAt DateTime?
+
+  studentCompanies StudentCompany[]
+  classesStudent   ClassStudent[]
+}
+
+model StudentCompany {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+}
+
+model Class {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name        String
+  description String?
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  classStudents ClassStudent[]
+
+  @@unique([companyId, name])
+}
+
+model ClassStudent {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  classId Int
+  class   Class @relation(fields: [classId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId Int?
+}
+
+model Category {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name                   String
+  allowMultipleSelection Boolean @default(false)
+
+  parentId      Int?
+  parent        Category?  @relation("ParentCategory", fields: [parentId], references: [id])
+  subcategories Category[] @relation("ParentCategory")
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  questionCategories QuestionCategory[]
+}
+
+model Question {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  description String
+  type        QuestionTypeEnum
+  maxLength   Int?
+  enabled     Boolean          @default(true)
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  questionCategories QuestionCategory[]
+  questionOptions    QuestionOption[]
+}
+
+model QuestionCategory {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  Company   Company? @relation(fields: [companyId], references: [id])
+  companyId Int?
+}
+
+model QuestionOption {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  description String
+  isCorrect   Boolean @default(false)
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+}

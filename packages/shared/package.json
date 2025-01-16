@@ -1,0 +1,13 @@
+{
+  "name": "@prova-livre/shared",
+  "version": "0.0.1",
+  "module": "index.ts",
+  "type": "module",
+  "dependencies": {
+    "schema-to-yup": "^1.12.18",
+    "yup": "^1.4.0"
+  },
+  "devDependencies": {
+    "json-schema-to-ts": "^3.1.0"
+  }
+}

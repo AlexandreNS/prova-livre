@@ -1,0 +1,44 @@
+{
+  "compilerOptions": {
+    // Enable latest features
+    "lib": ["ESNext", "DOM"],
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleDetection": "force",
+    "jsx": "react-jsx",
+    "allowJs": true,
+
+    // Bundler mode
+    "moduleResolution": "bundler",
+    "verbatimModuleSyntax": true,
+    "noEmit": true,
+
+    // Best practices
+    "strict": true,
+    "skipLibCheck": true,
+    "noFallthroughCasesInSwitch": true,
+
+    // Some stricter flags (disabled by default)
+    "noUnusedLocals": false,
+    "noUnusedParameters": false,
+    "noPropertyAccessFromIndexSignature": false,
+
+    // Packages paths
+    "paths": {
+      "@prova-livre/backend/*": [
+        "./packages/backend/src/*"
+      ],
+      "@prova-livre/frontend/*": [
+        "./packages/frontend/src/*"
+      ],
+      "@prova-livre/shared/*": [
+        "./packages/shared/src/*"
+      ]
+    }
+  },
+  "include": [
+    "./packages/backend/src",
+    "./packages/frontend/src",
+    "./packages/shared/src"
+  ]
+}

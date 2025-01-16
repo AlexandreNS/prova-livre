@@ -1,0 +1,40 @@
+{
+  "name": "prova-livre",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "clean": "pmex dlx rimraf **/node_modules **/package-lock.json **/yarn.lock **/pnpm-lock.yaml **/bun.lockb --glob",
+    "test": "tsx ./scripts/test.ts",
+    "dev": "npm-run-all --parallel dev:back dev:front",
+    "dev:back": "tsx ./scripts/dev-back.ts",
+    "dev:front": "tsx ./scripts/dev-front.ts",
+    "build:front": "tsx ./scripts/build-front.ts",
+    "build:back": "tsx ./scripts/build-back.ts",
+    "serve:api": "tsx ./scripts/serve-api.js",
+    "prisma": "tsx ./scripts/prisma.ts"
+  },
+  "dependencies": {
+    "date-fns": "^4.1.0",
+    "object-to-formdata": "^4.5.1",
+    "qs": "^6.13.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@types/qs": "^6.9.15",
+    "@typescript-eslint/eslint-plugin": "^7.18.0",
+    "@typescript-eslint/parser": "^7.18.0",
+    "eslint": "^8.57.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-perfectionist": "^2.11.0",
+    "eslint-plugin-react": "^7.35.0",
+    "eslint-plugin-react-hooks": "^4.6.2",
+    "npm-run-all": "^4.1.5",
+    "pmex": "^2.0.9",
+    "prettier": "^3.3.3",
+    "tsup": "^8.2.4",
+    "tsx": "^4.18.0",
+    "typescript": "^5.5.4"
+  }
+}
