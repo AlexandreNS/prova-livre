@@ -13,6 +13,10 @@ export const PERMISSIONS = {
   'Question-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Question-Write': ['owner', 'admin', 'editor', 'tutor'],
   'Question-Delete': ['owner', 'admin', 'editor'],
+
+  'Student-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Student-Write': ['owner', 'admin', 'editor', 'tutor'],
+  'Student-Delete': ['owner', 'admin', 'editor'],
 } as const;
 
 export function hasPermission(

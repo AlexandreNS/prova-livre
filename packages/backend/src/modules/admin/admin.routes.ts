@@ -5,6 +5,7 @@ import CategoryController from '@prova-livre/backend/modules/admin/category/cate
 import CompanyController from '@prova-livre/backend/modules/admin/company/company.controller';
 import MeController from '@prova-livre/backend/modules/admin/me/me.controller';
 import QuestionController from '@prova-livre/backend/modules/admin/question/question.controller';
+import StudentController from '@prova-livre/backend/modules/admin/student/student.controller';
 import UserController from '@prova-livre/backend/modules/admin/user/user.controller';
 
 export default async function AdminRoutes(fastify: FastifyInstance) {
@@ -13,5 +14,6 @@ export default async function AdminRoutes(fastify: FastifyInstance) {
   fastify.register(CompanyController, { prefix: '/companies' });
   fastify.register(MeController, { prefix: '/me' });
   fastify.register(QuestionController, { prefix: '/questions' });
+  fastify.register(StudentController, { prefix: '/students' });
   fastify.register(UserController, { prefix: '/users' }); // TODO TEMP
 }

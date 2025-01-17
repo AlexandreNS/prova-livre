@@ -12,7 +12,7 @@ import AdminRoutes from '@prova-livre/backend/modules/admin/admin.routes';
 // import StudentRoutes from '@prova-livre/backend/modules/student/student.routes';
 import Logger from '@prova-livre/backend/services/Logger';
 import { number } from '@prova-livre/shared/helpers/number.helper';
-import Fastify from 'fastify';
+import Fastify, { type FastifyRequest } from 'fastify';
 
 declare module '@fastify/jwt' {
   interface FastifyJWT {
@@ -68,7 +68,13 @@ const messages = {
 };
 
 fastify.register(jwtPlugin, {
-  secret: process.env.AUTH_SECRET_KEY as string,
+  secret: async function (request: FastifyRequest) {
+    if (request.url.startsWith('/student')) {
+      return process.env.AUTH_STUDENT_SECRET_KEY as string;
+    }
+
+    return process.env.AUTH_ADMIN_SECRET_KEY as string;
+  },
   messages: messages,
   cookie: {
     cookieName: 'token',

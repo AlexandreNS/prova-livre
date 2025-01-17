@@ -73,10 +73,12 @@ model Student {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  name       String?
-  email      String    @unique
-  password   String?   @db.Text
-  accessedAt DateTime?
+  name              String?
+  email             String    @unique
+  password          String?   @db.Text
+  temporaryPassword String?   @db.Text
+  tempPassExpiredAt DateTime?
+  accessedAt        DateTime?
 
   studentCompanies StudentCompany[]
   classesStudent   ClassStudent[]

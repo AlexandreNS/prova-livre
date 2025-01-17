@@ -49,6 +49,12 @@ export default function Sidebar() {
           url: '/admin/questions',
           hidden: !hasPermission(user?.role, 'Question-Read'),
         },
+        {
+          icon: 'Student',
+          label: 'Estudantes',
+          url: '/admin/students',
+          hidden: !hasPermission(user?.role, 'Student-Read'),
+        },
       ],
     },
   ];
