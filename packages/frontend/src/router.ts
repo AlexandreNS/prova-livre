@@ -12,11 +12,25 @@ export type Path =
   | `/admin/login`
   | `/admin/profile`
   | `/admin/profile/password`
+  | `/admin/questions`
+  | `/admin/questions/:questionId`
+  | `/admin/questions/:questionId/basic`
+  | `/admin/questions/:questionId/categories`
+  | `/admin/questions/:questionId/options`
+  | `/admin/students`
+  | `/admin/students/:studentId`
+  | `/admin/students/:studentId/basic`
 
 export type Params = {
   '/admin/categories/:categoryId': { categoryId: string }
   '/admin/categories/:categoryId/basic': { categoryId: string }
   '/admin/categories/:categoryId/subcategories': { categoryId: string }
+  '/admin/questions/:questionId': { questionId: string }
+  '/admin/questions/:questionId/basic': { questionId: string }
+  '/admin/questions/:questionId/categories': { questionId: string }
+  '/admin/questions/:questionId/options': { questionId: string }
+  '/admin/students/:studentId': { studentId: string }
+  '/admin/students/:studentId/basic': { studentId: string }
 }
 
 export type ModalPath = never

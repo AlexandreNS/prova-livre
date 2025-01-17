@@ -43,6 +43,12 @@ export default function Sidebar() {
           url: '/admin/categories',
           hidden: !hasPermission(user?.role, 'Category-Read'),
         },
+        {
+          icon: 'List',
+          label: 'Banco de Questões',
+          url: '/admin/questions',
+          hidden: !hasPermission(user?.role, 'Question-Read'),
+        },
       ],
     },
   ];
