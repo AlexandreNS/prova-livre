@@ -42,7 +42,7 @@ export default async function StudentController(fastify: FastifyInstance) {
           },
         ]),
       },
-      orderBy: { id: 'desc' },
+      orderBy: { name: 'asc' },
     });
 
     return reply.send(students);

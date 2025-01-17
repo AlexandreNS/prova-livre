@@ -49,7 +49,7 @@ export default async function paginate<ModelType, FindManyType>(
     ...options,
     take: limit,
     skip: offset,
-    orderBy,
+    ...(orderBy ? { orderBy } : {}),
   });
 
   return { page, limit, offset, pages, total, order, sort, rows };
