@@ -55,6 +55,12 @@ export default function Sidebar() {
           url: '/admin/students',
           hidden: !hasPermission(user?.role, 'Student-Read'),
         },
+        {
+          icon: 'UsersFour',
+          label: 'Turmas',
+          url: '/admin/classes',
+          hidden: !hasPermission(user?.role, 'Class-Read'),
+        },
       ],
     },
   ];

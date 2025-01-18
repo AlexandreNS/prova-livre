@@ -10,6 +10,10 @@ export const PERMISSIONS = {
   'Category-Write': ['owner', 'admin', 'editor'],
   'Category-Delete': ['owner', 'admin'],
 
+  'Class-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Class-Write': ['owner', 'admin', 'editor'],
+  'Class-Delete': ['owner', 'admin'],
+
   'Question-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Question-Write': ['owner', 'admin', 'editor', 'tutor'],
   'Question-Delete': ['owner', 'admin', 'editor'],
