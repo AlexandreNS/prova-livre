@@ -28,9 +28,7 @@ export default function Page() {
 
   const [hasWritePermission] = hasPermissionList(user?.role, 'Category-Write');
 
-  const [modelSubcategory, setModelSubcategory] = useState<
-    SchemaResponse<typeof CategoryCreateSchema> | SchemaResponse<typeof CategoryCreateSchema>
-  >();
+  const [modelSubcategory, setModelSubcategory] = useState<SchemaResponse<typeof CategoryCreateSchema>>();
 
   const [subcategoriesParams, setSubcategoriesParams] = useDependentState<SchemaQueryParams<typeof CategoryListSchema>>(
     () => ({
