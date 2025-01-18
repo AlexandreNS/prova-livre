@@ -24,7 +24,7 @@ import argon2 from 'argon2';
 export default async function StudentController(fastify: FastifyInstance) {
   fastify.get<SchemaRoute<typeof StudentListSchema>>('/', { schema: StudentListSchema }, async (request, reply) => {
     const { role, companyId } = request.user;
-    const { search, ...rest } = request.query;
+    const { search, classId, ...rest } = request.query;
 
     if (!hasPermission(role, 'Student-Read')) {
       throw new HttpException(ErrorCodeString.NO_PERMISSION);
@@ -33,6 +33,7 @@ export default async function StudentController(fastify: FastifyInstance) {
     const students = await paginate<Student, Prisma.StudentFindManyArgs>(prisma.student, rest, {
       where: {
         studentCompanies: { some: { companyId } },
+        classesStudent: cast(classId, () => ({ some: { classId } })),
         OR: cast(search, () => [
           {
             name: { contains: search, mode: 'insensitive' },

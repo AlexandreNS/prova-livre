@@ -14,6 +14,7 @@ export const StudentListSchema = {
     properties: {
       ...SearchSchemaProps,
       ...PaginationSchemaProps,
+      classId: { type: 'number' },
     },
   },
   response: {
