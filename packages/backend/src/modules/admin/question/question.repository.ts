@@ -26,6 +26,18 @@ export async function questionAddCategory(questionId: number, categoryId: number
     throw new HttpException(`A categoria "${parentCategory.name}" não permite selecionar múltiplas subcategorias.`);
   }
 
+  const questionCategoryExist = await prisma.questionCategory.findFirst({
+    where: {
+      questionId,
+      categoryId,
+    },
+    select: { category: true },
+  });
+
+  if (questionCategoryExist) {
+    throw new HttpException(`A categoria "${questionCategoryExist.category.name}" já foi vinculada.`);
+  }
+
   await prisma.questionCategory.create({
     data: {
       questionId,
