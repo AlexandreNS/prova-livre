@@ -12,6 +12,7 @@ import {
   type RbkInputEvent,
   type RbkKeyboardEvent,
   type RbkPointerEvent,
+  type ReactElement,
   type SelectOption,
   useForm,
   useHtmlId,
@@ -19,6 +20,7 @@ import {
 import { Box, Card, Divider, Input, Loading, Scrollable, Text } from '@react-bulk/web';
 
 export type InputFetchProps = {
+  customLabel?: (item: any) => ReactElement;
   groupByAttr?: string;
   groupByLabelAttr?: string;
   labelAttr?: string;
@@ -41,6 +43,7 @@ export default function InputFetch({
   onChange,
   groupByAttr,
   groupByLabelAttr,
+  customLabel,
   ...rest
 }: InputFetchProps) {
   const elId = `input-fetch-${useHtmlId()}`;
@@ -234,7 +237,11 @@ export default function InputFetch({
                           })
                         }
                       >
-                        <Html fontWeight="500" html={stripTags(label)} />
+                        {customLabel && typeof customLabel === 'function' ? (
+                          customLabel(item)
+                        ) : (
+                          <Html fontWeight="500" html={stripTags(label)} />
+                        )}
                       </Box>
                     </Box>
                   );
