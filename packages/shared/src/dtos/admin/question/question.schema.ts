@@ -19,6 +19,5 @@ export const QuestionOptionSchema = {
     id: { type: 'number' },
     description: { type: 'string' },
     isCorrect: { type: 'boolean' },
-    enabled: { type: 'boolean' },
   },
 } as const satisfies SchemaBase;

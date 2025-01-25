@@ -155,7 +155,7 @@ export const QuestionOptionsUpdateSchema = {
     },
   },
   response: {
-    204: { type: 'null' },
+    200: QuestionOptionSchema,
   },
 } as const satisfies SchemaFastify;
 
