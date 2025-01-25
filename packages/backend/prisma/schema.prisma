@@ -27,7 +27,7 @@ model Company {
   deletedAt DateTime?
 
   name String
-  slug String? @unique
+  slug String?
 
   userCompanyRoles   UserCompanyRole[]
   categories         Category[]
@@ -110,8 +110,6 @@ model Class {
   company   Company @relation(fields: [companyId], references: [id])
 
   classStudents ClassStudent[]
-
-  @@unique([companyId, name])
 }
 
 model ClassStudent {
