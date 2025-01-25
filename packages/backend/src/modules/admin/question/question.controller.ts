@@ -215,7 +215,7 @@ export default async function QuestionController(fastify: FastifyInstance) {
         throw new HttpException(ErrorCodeString.NO_PERMISSION);
       }
 
-      await prisma.questionOption.updateMany({
+      const option = await prisma.questionOption.update({
         where: {
           question: { companyId },
           questionId,
@@ -227,7 +227,7 @@ export default async function QuestionController(fastify: FastifyInstance) {
         },
       });
 
-      return reply.status(204).send();
+      return reply.send(option);
     },
   );
 

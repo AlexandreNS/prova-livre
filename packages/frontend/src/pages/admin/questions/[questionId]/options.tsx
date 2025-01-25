@@ -2,6 +2,7 @@ import type { SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
 import { useListState } from 'react-state-hooks';
 
+import Html from '@prova-livre/frontend/components/Html';
 import Icon from '@prova-livre/frontend/components/Icon';
 import InputHtml from '@prova-livre/frontend/components/InputHtml';
 import NoPermission from '@prova-livre/frontend/components/NoPermission';
@@ -174,14 +175,19 @@ export default function Page() {
                             </Box>
                           </Box>
                         )}
+
                         <Box xs={12}>
-                          <InputHtml
-                            autoFocus
-                            required
-                            disabled={!isEditing}
-                            name="description"
-                            value={option.description}
-                          />
+                          {isEditing ? (
+                            <InputHtml
+                              autoFocus
+                              required
+                              disabled={!isEditing}
+                              name="description"
+                              value={option.description}
+                            />
+                          ) : (
+                            <Html html={option.description} />
+                          )}
                         </Box>
                       </Grid>
 
