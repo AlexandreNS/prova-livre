@@ -14,6 +14,10 @@ export const PERMISSIONS = {
   'Class-Write': ['owner', 'admin', 'editor'],
   'Class-Delete': ['owner', 'admin'],
 
+  'Exam-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Exam-Write': ['owner', 'admin', 'editor'],
+  'Exam-Delete': ['owner', 'admin'],
+
   'Question-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Question-Write': ['owner', 'admin', 'editor', 'tutor'],
   'Question-Delete': ['owner', 'admin', 'editor'],

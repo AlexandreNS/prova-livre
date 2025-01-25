@@ -36,6 +36,7 @@ model Company {
   classStudents      ClassStudent[]
   questions          Question[]
   questionCategories QuestionCategory[]
+  Exam               Exam[]
 }
 
 model User {
@@ -145,6 +146,7 @@ model Category {
   company   Company @relation(fields: [companyId], references: [id])
 
   questionCategories QuestionCategory[]
+  ExamRuleCategory   ExamRuleCategory[]
 }
 
 model Question {
@@ -163,6 +165,7 @@ model Question {
 
   questionCategories QuestionCategory[]
   questionOptions    QuestionOption[]
+  ExamRule           ExamRule[]
 }
 
 model QuestionCategory {
@@ -192,4 +195,54 @@ model QuestionOption {
 
   questionId Int
   question   Question @relation(fields: [questionId], references: [id])
+}
+
+model Exam {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name        String
+  title       String?
+  description String?
+  minScore    Int?
+  maxScore    Int?
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  examRules ExamRule[]
+}
+
+model ExamRule {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  score          Int?
+  questionsCount Int               @default(1)
+  questionType   QuestionTypeEnum?
+
+  examId Int
+  exam   Exam @relation(fields: [examId], references: [id])
+
+  questionId Int?
+  question   Question? @relation(fields: [questionId], references: [id])
+
+  examRuleCategories ExamRuleCategory[]
+}
+
+model ExamRuleCategory {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  examRuleId Int
+  examRule   ExamRule @relation(fields: [examRuleId], references: [id])
+
+  categoryId Int
+  category   Category @relation(fields: [categoryId], references: [id])
 }

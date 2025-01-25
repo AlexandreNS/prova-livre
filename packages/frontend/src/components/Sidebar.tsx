@@ -61,6 +61,12 @@ export default function Sidebar() {
           url: '/admin/classes',
           hidden: !hasPermission(user?.role, 'Class-Read'),
         },
+        {
+          icon: 'Note',
+          label: 'Provas',
+          url: '/admin/exams',
+          hidden: !hasPermission(user?.role, 'Exam-Read'),
+        },
       ],
     },
   ];
