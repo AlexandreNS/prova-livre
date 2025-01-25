@@ -75,7 +75,7 @@ export default function InputFetch({
 
   useEffect(() => {
     if (!selected) return;
-    setSearch(string(selected.name));
+    setSearch(stripTags(string(selected?.[labelAttr])));
   }, [selected]);
 
   const handleBlur = useCallback(() => {
@@ -180,7 +180,7 @@ export default function InputFetch({
         placeholder={placeholder}
         required={required}
         startAddon={selectedId ? <Text variant="secondary">#{selectedId}</Text> : null}
-        value={search ?? selected?.name}
+        value={search ?? stripTags(selected?.[labelAttr])}
         onBlur={handleBlur}
         onChange={handleChangeSearch}
         onKeyDown={handleKeyDown}
@@ -240,7 +240,12 @@ export default function InputFetch({
                         {customLabel && typeof customLabel === 'function' ? (
                           customLabel(item)
                         ) : (
-                          <Html fontWeight="500" html={stripTags(label)} />
+                          <Box row alignItems="center">
+                            <Text mr={1} variant="secondary">
+                              #{value}
+                            </Text>
+                            <Html fontWeight="500" html={stripTags(label)} />
+                          </Box>
                         )}
                       </Box>
                     </Box>
