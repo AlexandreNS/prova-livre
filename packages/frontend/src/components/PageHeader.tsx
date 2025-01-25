@@ -69,7 +69,7 @@ export default function PageHeader({ tabs, title, subtitle, children, onSearch }
   }, [search]);
 
   return (
-    <Card corners={0} m="-1gap" mb={0} position="sticky" t={0} zIndex={1}>
+    <Card corners={0} m="-1gap" mb={0} position="sticky" t={0} zIndex={4}>
       <Grid row alignItems="center" gap={0.5}>
         {backURL !== '/admin' && (
           <Box ml={-3}>
