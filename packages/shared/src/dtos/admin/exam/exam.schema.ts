@@ -25,8 +25,6 @@ export const ExamRuleSchema = {
     questionType: { type: ['string', 'null'], enum: ['discursive', 'options'] },
     examId: { type: 'number' },
     questionId: { type: ['number', 'null'] },
-
-    // TODO: remover daqui e colocar no  ExamRuleCategoriesList (com controller) AMANHA NAO PODE FALTAR !IMPORTANTE! CRIAR O COMPONENTE PARA REQUISICAO
     examRuleCategories: {
       type: 'array',
       items: {
@@ -38,15 +36,5 @@ export const ExamRuleSchema = {
         },
       },
     },
-  },
-} as const satisfies SchemaBase;
-
-export const ExamTypeSchema = {
-  type: 'object',
-  required: ['id', 'name', 'title'],
-  properties: {
-    id: { type: 'number' },
-    name: { type: 'string' },
-    title: { type: 'string' },
   },
 } as const satisfies SchemaBase;

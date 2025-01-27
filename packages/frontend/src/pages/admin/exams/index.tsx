@@ -62,7 +62,7 @@ export default function Page() {
 
   return (
     <>
-      <PageHeader title="Avaliações" onSearch={(search) => updateParams({ search })}>
+      <PageHeader title="Provas" onSearch={(search) => updateParams({ search })}>
         {hasWritePermission && (
           <LinkChild href="/admin/exams/add/basic">
             <Button>Adicionar</Button>

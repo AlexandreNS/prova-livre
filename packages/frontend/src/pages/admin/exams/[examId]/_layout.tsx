@@ -18,7 +18,7 @@ export default function Layout() {
   return (
     <>
       <PageHeader
-        title={`${examId ? 'Editar' : 'Adicionar'} Provas`}
+        title={`${examId ? 'Editar' : 'Adicionar'} Prova`}
         tabs={[
           hasReadPermission && examId ? { value: '', label: 'Resumo' } : null,
           hasWritePermission && { value: 'basic', label: 'Dados' },

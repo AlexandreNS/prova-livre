@@ -6,7 +6,6 @@ import { useDependentState } from 'react-state-hooks';
 
 import Icon from '@prova-livre/frontend/components/Icon';
 import InputFetch from '@prova-livre/frontend/components/InputFetch';
-import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import ListGroup from '@prova-livre/frontend/components/ListGroup';
 import NoPermission from '@prova-livre/frontend/components/NoPermission';
 import Pagination from '@prova-livre/frontend/components/Pagination';
@@ -17,17 +16,12 @@ import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import useIdParam from '@prova-livre/frontend/hooks/useIdParam';
 import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
-import { CategoryCreateSchema, CategoryListSchema } from '@prova-livre/shared/dtos/admin/category/category.dto';
 import { ClassStudentsCreateSchema } from '@prova-livre/shared/dtos/admin/class/class.dto';
-import {
-  QuestionCategoriesCreateSchema,
-  type QuestionCategoriesListSchema,
-} from '@prova-livre/shared/dtos/admin/question/question.dto';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { validate } from '@prova-livre/shared/helpers/form.helper';
 import { number } from '@prova-livre/shared/helpers/number.helper';
 import { type AnyObject, type RbkFormEvent, type RbkPointerEvent, useToaster } from '@react-bulk/core';
-import { Box, Button, Card, Divider, Form, Grid, Modal, Text, Tooltip } from '@react-bulk/web';
+import { Box, Button, Divider, Form, Grid, Modal, Text, Tooltip } from '@react-bulk/web';
 
 export default function Page() {
   const { user } = useAdminAuth();
@@ -115,7 +109,7 @@ export default function Page() {
               { label: 'E-mail', value: student.email, xs: 12, md: 'flex' },
             ]}
             right={
-              <Box m="-0.5gap">
+              <Box flex justifyContent="center" m="-0.5gap">
                 <Tooltip title="Remover">
                   <Button
                     circular
