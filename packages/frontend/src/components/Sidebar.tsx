@@ -67,6 +67,12 @@ export default function Sidebar() {
           url: '/admin/exams',
           hidden: !hasPermission(user?.role, 'Exam-Read'),
         },
+        {
+          icon: 'CalendarPlus',
+          label: 'Aplicações de Prova',
+          url: '/admin/applications',
+          hidden: !hasPermission(user?.role, 'Application-Read'),
+        },
       ],
     },
   ];

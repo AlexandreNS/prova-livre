@@ -15,14 +15,13 @@ import {
   ClassStudentsDeleteSchema,
   ClassUpdateSchema,
 } from '@prova-livre/shared/dtos/admin/class/class.dto';
-import { QuestionCategoriesDeleteSchema } from '@prova-livre/shared/dtos/admin/question/question.dto';
 import { hasPermission } from '@prova-livre/shared/helpers/feature.helper';
 import { cast } from '@prova-livre/shared/helpers/util.helper';
 
 export default async function ClassController(fastify: FastifyInstance) {
   fastify.get<SchemaRoute<typeof ClassListSchema>>('/', { schema: ClassListSchema }, async (request, reply) => {
     const { role, companyId } = request.user;
-    const { search, ...rest } = request.query;
+    const { search, applicationId, ...rest } = request.query;
 
     if (!hasPermission(role, 'Class-Read')) {
       throw new HttpException(ErrorCodeString.NO_PERMISSION);
@@ -31,6 +30,7 @@ export default async function ClassController(fastify: FastifyInstance) {
     const classes = await paginate<Class, Prisma.ClassFindManyArgs>(prisma.class, rest, {
       where: {
         companyId,
+        applicationsClass: cast(applicationId, () => ({ some: { applicationId } })),
         OR: cast(search, () => [
           {
             name: { contains: search, mode: 'insensitive' },

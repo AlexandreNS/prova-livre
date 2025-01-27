@@ -36,7 +36,8 @@ model Company {
   classStudents      ClassStudent[]
   questions          Question[]
   questionCategories QuestionCategory[]
-  Exam               Exam[]
+  exams              Exam[]
+  applications       Application[]
 }
 
 model User {
@@ -50,7 +51,8 @@ model User {
   password   String?   @db.Text
   accessedAt DateTime?
 
-  userCompanyRoles UserCompanyRole[]
+  userCompanyRoles            UserCompanyRole[]
+  studentApplicationQuestions StudentApplicationQuestion[]
 }
 
 model UserCompanyRole {
@@ -81,8 +83,9 @@ model Student {
   tempPassExpiredAt DateTime?
   accessedAt        DateTime?
 
-  studentCompanies StudentCompany[]
-  classesStudent   ClassStudent[]
+  studentCompanies    StudentCompany[]
+  classesStudent      ClassStudent[]
+  studentApplications StudentApplication[]
 }
 
 model StudentCompany {
@@ -110,7 +113,8 @@ model Class {
   companyId Int
   company   Company @relation(fields: [companyId], references: [id])
 
-  classStudents ClassStudent[]
+  classStudents     ClassStudent[]
+  applicationsClass ApplicationClass[]
 }
 
 model ClassStudent {
@@ -125,7 +129,7 @@ model ClassStudent {
   studentId Int
   student   Student @relation(fields: [studentId], references: [id])
 
-  Company   Company? @relation(fields: [companyId], references: [id])
+  company   Company? @relation(fields: [companyId], references: [id])
   companyId Int?
 }
 
@@ -146,7 +150,7 @@ model Category {
   company   Company @relation(fields: [companyId], references: [id])
 
   questionCategories QuestionCategory[]
-  ExamRuleCategory   ExamRuleCategory[]
+  examRulesCategory  ExamRuleCategory[]
 }
 
 model Question {
@@ -163,9 +167,10 @@ model Question {
   companyId Int
   company   Company @relation(fields: [companyId], references: [id])
 
-  questionCategories QuestionCategory[]
-  questionOptions    QuestionOption[]
-  ExamRule           ExamRule[]
+  questionCategories         QuestionCategory[]
+  questionOptions            QuestionOption[]
+  examRules                  ExamRule[]
+  StudentApplicationQuestion StudentApplicationQuestion[]
 }
 
 model QuestionCategory {
@@ -180,7 +185,7 @@ model QuestionCategory {
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
 
-  Company   Company? @relation(fields: [companyId], references: [id])
+  company   Company? @relation(fields: [companyId], references: [id])
   companyId Int?
 }
 
@@ -212,7 +217,8 @@ model Exam {
   companyId Int
   company   Company @relation(fields: [companyId], references: [id])
 
-  examRules ExamRule[]
+  examRules    ExamRule[]
+  applications Application[]
 }
 
 model ExamRule {
@@ -245,4 +251,78 @@ model ExamRuleCategory {
 
   categoryId Int
   category   Category @relation(fields: [categoryId], references: [id])
+}
+
+model Application {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  startedAt   DateTime
+  endedAt     DateTime
+  attempts    Int      @default(1)
+  limitTime   Int?
+  showAnswers Boolean  @default(false)
+  showScores  Boolean  @default(false)
+
+  examId Int
+  exam   Exam @relation(fields: [examId], references: [id])
+
+  companyId Int
+  company   Company @relation(fields: [companyId], references: [id])
+
+  applicationClasses  ApplicationClass[]
+  studentsApplication StudentApplication[]
+}
+
+model ApplicationClass {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  applicationId Int
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  classId Int
+  class   Class @relation(fields: [classId], references: [id])
+}
+
+model StudentApplication {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  startedAt   DateTime?
+  submittedAt DateTime?
+
+  applicationId Int
+  application   Application @relation(fields: [applicationId], references: [id])
+
+  studentId Int
+  student   Student @relation(fields: [studentId], references: [id])
+
+  studentApplicationQuestions StudentApplicationQuestion[]
+}
+
+model StudentApplicationQuestion {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  questionScore Int
+  studentScore  Int?
+  answer        String? @db.Text
+
+  studentApplicationId Int
+  studentApplication   StudentApplication @relation(fields: [studentApplicationId], references: [id])
+
+  questionId Int
+  question   Question @relation(fields: [questionId], references: [id])
+
+  corretorUserId Int?
+  corretorUser   User? @relation(fields: [corretorUserId], references: [id])
 }

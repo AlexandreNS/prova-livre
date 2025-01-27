@@ -1,6 +1,6 @@
 import type { SchemaFastify } from '@prova-livre/shared/types/schema.type';
 
-import { ClassSchema, ClassStudentSchema } from '@prova-livre/shared/dtos/admin/class/class.schema';
+import { ClassSchema } from '@prova-livre/shared/dtos/admin/class/class.schema';
 import {
   PaginationSchemaProps,
   PaginationSchemaRequired,
@@ -14,6 +14,7 @@ export const ClassListSchema = {
     properties: {
       ...SearchSchemaProps,
       ...PaginationSchemaProps,
+      applicationId: { type: 'number' },
     },
   },
   response: {

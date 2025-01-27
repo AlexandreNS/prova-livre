@@ -1,5 +1,6 @@
 import type { FastifyInstance } from 'fastify';
 
+import ApplicationController from '@prova-livre/backend/modules/admin/application/application.controller';
 import AuthController from '@prova-livre/backend/modules/admin/auth/auth.controller';
 import CategoryController from '@prova-livre/backend/modules/admin/category/category.controller';
 import ClassController from '@prova-livre/backend/modules/admin/class/class.controller';
@@ -11,6 +12,7 @@ import StudentController from '@prova-livre/backend/modules/admin/student/studen
 import UserController from '@prova-livre/backend/modules/admin/user/user.controller';
 
 export default async function AdminRoutes(fastify: FastifyInstance) {
+  fastify.register(ApplicationController, { prefix: '/applications' });
   fastify.register(AuthController, { prefix: '/auth' });
   fastify.register(CategoryController, { prefix: '/categories' });
   fastify.register(ClassController, { prefix: '/classes' });

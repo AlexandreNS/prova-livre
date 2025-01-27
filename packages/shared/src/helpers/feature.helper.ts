@@ -6,6 +6,10 @@ export const PERMISSIONS = {
   'Api-Docs': ['owner', 'admin'],
   'Api-Board': [],
 
+  'Application-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Application-Write': ['owner', 'admin', 'editor'],
+  'Application-Delete': ['owner', 'admin'],
+
   'Category-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Category-Write': ['owner', 'admin', 'editor'],
   'Category-Delete': ['owner', 'admin'],

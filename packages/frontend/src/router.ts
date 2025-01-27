@@ -5,6 +5,11 @@ import { components, hooks, utils } from '@generouted/react-router/client'
 
 export type Path =
   | `/admin`
+  | `/admin/applications`
+  | `/admin/applications/:applicationId`
+  | `/admin/applications/:applicationId/basic`
+  | `/admin/applications/:applicationId/classes`
+  | `/admin/applications/:applicationId/students`
   | `/admin/categories`
   | `/admin/categories/:categoryId`
   | `/admin/categories/:categoryId/basic`
@@ -30,6 +35,10 @@ export type Path =
   | `/admin/students/:studentId/basic`
 
 export type Params = {
+  '/admin/applications/:applicationId': { applicationId: string }
+  '/admin/applications/:applicationId/basic': { applicationId: string }
+  '/admin/applications/:applicationId/classes': { applicationId: string }
+  '/admin/applications/:applicationId/students': { applicationId: string }
   '/admin/categories/:categoryId': { categoryId: string }
   '/admin/categories/:categoryId/basic': { categoryId: string }
   '/admin/categories/:categoryId/subcategories': { categoryId: string }
