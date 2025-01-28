@@ -58,15 +58,15 @@ export async function listStudentApplications(companyId: number, studentId: numb
     let status;
     let studentScoreSum = 0;
     for (const saq of studentApplicationQuestions) {
-      if (saq.question.type === QuestionType.DISCURSIVE && !saq.corretorUserId) {
+      if (saq.question.type === QuestionType.DISCURSIVE && saq.studentScore === null) {
         status = StudentApplicationStatus.AWAITING_CORRECTION;
       }
-
       studentScoreSum += number(saq.studentScore);
     }
 
     status =
-      status || isSubmitted
+      status ||
+      (isSubmitted
         ? StudentApplicationStatus.SUBMITTED
         : isExpired
           ? StudentApplicationStatus.EXPIRED
@@ -76,7 +76,7 @@ export async function listStudentApplications(companyId: number, studentId: numb
               ? StudentApplicationStatus.ENDED
               : application.startedAt <= new Date()
                 ? StudentApplicationStatus.STARTED
-                : StudentApplicationStatus.WAITING;
+                : StudentApplicationStatus.WAITING);
 
     studentApplicationsResult.push({
       status,

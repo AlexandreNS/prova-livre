@@ -14,6 +14,10 @@ export const PERMISSIONS = {
   'Category-Write': ['owner', 'admin', 'editor'],
   'Category-Delete': ['owner', 'admin'],
 
+  'Correction-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Correction-Write': ['owner', 'admin', 'editor', 'tutor'],
+  'Correction-Delete': ['owner', 'admin'],
+
   'Class-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Class-Write': ['owner', 'admin', 'editor'],
   'Class-Delete': ['owner', 'admin'],

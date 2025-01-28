@@ -73,6 +73,12 @@ export default function Sidebar() {
           url: '/admin/applications',
           hidden: !hasPermission(user?.role, 'Application-Read'),
         },
+        {
+          icon: 'ListNumbers',
+          label: 'Correções',
+          url: '/admin/corrections',
+          hidden: !hasPermission(user?.role, 'Correction-Read'),
+        },
       ],
     },
   ];

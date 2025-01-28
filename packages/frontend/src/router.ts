@@ -18,6 +18,8 @@ export type Path =
   | `/admin/classes/:classId`
   | `/admin/classes/:classId/basic`
   | `/admin/classes/:classId/students`
+  | `/admin/corrections`
+  | `/admin/corrections/:studentApplicationId/basic`
   | `/admin/exams`
   | `/admin/exams/:examId`
   | `/admin/exams/:examId/basic`
@@ -45,6 +47,7 @@ export type Params = {
   '/admin/classes/:classId': { classId: string }
   '/admin/classes/:classId/basic': { classId: string }
   '/admin/classes/:classId/students': { classId: string }
+  '/admin/corrections/:studentApplicationId/basic': { studentApplicationId: string }
   '/admin/exams/:examId': { examId: string }
   '/admin/exams/:examId/basic': { examId: string }
   '/admin/exams/:examId/questions': { examId: string }
