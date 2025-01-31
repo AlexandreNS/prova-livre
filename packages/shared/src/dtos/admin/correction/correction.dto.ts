@@ -34,19 +34,27 @@ export const CorrectionListSchema = {
               isCorrected: { type: 'boolean' },
               student: {
                 type: 'object',
-                required: ['id', 'name'],
+                required: ['id', 'name', 'email'],
                 properties: {
                   id: { type: 'number' },
                   name: { type: 'string' },
+                  email: { type: 'string' },
                 },
               },
               application: {
                 type: 'object',
-                required: ['id'],
+                required: ['id', 'exam'],
                 properties: {
                   id: { type: 'number' },
                   startedAt: { type: 'string' },
                   endedAt: { type: 'string' },
+                  exam: {
+                    type: 'object',
+                    required: ['name'],
+                    properties: {
+                      name: { type: 'string' },
+                    },
+                  },
                 },
               },
             },
@@ -69,50 +77,66 @@ export const CorrectionGetSchema = {
   response: {
     200: {
       type: 'object',
-      required: ['id', 'submittedAt', 'student', 'application'],
+      required: ['exam'],
       properties: {
-        id: { type: 'number' },
-        startedAt: { type: 'string' },
-        submittedAt: { type: 'string' },
-        student: {
+        exam: {
           type: 'object',
           required: ['id', 'name'],
           properties: {
-            id: { type: 'number' },
             name: { type: 'string' },
+            minScore: { type: ['number', 'null'] },
+            maxScore: { type: 'number' },
           },
         },
-        application: {
+        studentApplication: {
           type: 'object',
-          required: ['id'],
+          required: ['id', 'questions', 'startedAt', 'submittedAt', 'status', 'student'],
           properties: {
             id: { type: 'number' },
-          },
-        },
-        studentApplicationQuestions: {
-          type: 'array',
-          items: {
-            type: 'object',
-            required: ['id', 'answer', 'questionScore', 'studentScore', 'question'],
-            properties: {
-              id: { type: 'number' },
-              answer: { type: ['string', 'null'] },
-              feedback: { type: ['string', 'null'] },
-              questionScore: { type: 'number' },
-              studentScore: { type: ['number', 'null'] },
-              question: {
+            startedAt: { type: ['string', 'null'] },
+            submittedAt: { type: ['string', 'null'] },
+            studentScore: { type: ['number', 'null'] },
+            student: {
+              type: 'object',
+              required: ['id', 'name', 'email'],
+              properties: {
+                id: { type: 'number' },
+                name: { type: 'string' },
+                email: { type: 'string' },
+              },
+            },
+            questions: {
+              type: 'array',
+              items: {
                 type: 'object',
-                required: ['id', 'type', 'description', 'questionOptions'],
+                required: [
+                  'id',
+                  'type',
+                  'description',
+                  'answer',
+                  'correctOptionsCount',
+                  'questionScore',
+                  'studentScore',
+                  'questionOptions',
+                  'studentApplicationQuestionId',
+                ],
                 properties: {
                   id: { type: 'number' },
                   type: { type: 'string', enum: ['discursive', 'options'] },
                   description: { type: 'string' },
-                  maxLength: { type: ['number', 'null'] },
+                  answer: { type: ['string', 'null'] },
+                  correctOptionsCount: { type: ['number', 'null'] },
+                  correctSelectedOptionsCount: { type: ['number', 'null'] },
+                  questionScore: { type: 'number' },
+                  studentApplicationQuestionId: { type: 'number' },
+                  studentScore: { type: ['number', 'null'] },
+                  feedback: { type: ['string', 'null'] },
+                  correctionStatus: { type: 'string', enum: ['correct', 'partial', 'incorrect'] },
                   questionOptions: {
                     type: 'array',
                     items: {
                       type: 'object',
-                      required: ['id', 'description', 'isCorrect'],
+                      required: ['id', 'description'],
                       properties: {
                         id: { type: 'number' },
                         description: { type: 'string' },
@@ -145,6 +169,27 @@ export const CorrectionUpdateSchema = {
     properties: {
       studentApplicationQuestionId: { type: 'number' },
       studentScore: { type: 'number' },
+    },
+  },
+  response: {
+    204: { type: 'null' },
+  },
+} as const satisfies SchemaFastify;
+
+export const CorrectionDeleteSchema = {
+  tags: ['admin/correction'],
+  params: {
+    type: 'object',
+    required: ['studentApplicationId'],
+    properties: {
+      studentApplicationId: { type: 'number' },
+    },
+  },
+  body: {
+    type: 'object',
+    required: ['resetApplication'],
+    properties: {
+      resetApplication: { type: 'boolean' },
     },
   },
   response: {

@@ -5,8 +5,10 @@ import type { FastifyInstance } from 'fastify';
 import prisma from '@prova-livre/backend/database';
 import paginate from '@prova-livre/backend/database/paginate';
 import HttpException from '@prova-livre/backend/exceptions/http.exception';
+import { getStudentApplication } from '@prova-livre/backend/modules/admin/correction/correction.repository';
 import { ErrorCodeString } from '@prova-livre/shared/constants/ErrorCode';
 import {
+  CorrectionDeleteSchema,
   CorrectionGetSchema,
   CorrectionListSchema,
   CorrectionUpdateSchema,
@@ -65,7 +67,9 @@ export default async function CorrectionController(fastify: FastifyInstance) {
           },
           include: {
             student: true,
-            application: true,
+            application: {
+              include: { exam: true },
+            },
             studentApplicationQuestions: true,
           },
           orderBy: [
@@ -103,27 +107,7 @@ export default async function CorrectionController(fastify: FastifyInstance) {
         throw new HttpException(ErrorCodeString.NO_PERMISSION);
       }
 
-      const studentApplication = await prisma.studentApplication.findFirstOrThrow({
-        where: {
-          id: studentApplicationId,
-          student: {
-            studentCompanies: { some: { companyId } }, // check company
-          },
-          application: { companyId }, // check company
-          submittedAt: { not: null },
-        },
-        include: {
-          student: true,
-          application: true,
-          studentApplicationQuestions: {
-            include: {
-              question: {
-                include: { questionOptions: true },
-              },
-            },
-          },
-        },
-      });
+      const studentApplication = await getStudentApplication(companyId, studentApplicationId);
 
       return reply.send(studentApplication);
     },
@@ -162,25 +146,41 @@ export default async function CorrectionController(fastify: FastifyInstance) {
     },
   );
 
-  // fastify.delete<SchemaRoute<typeof AppDeleteSchema>>(
-  //   '/:appId',
-  //   { schema: AppDeleteSchema },
-  //   async (request, reply) => {
-  //     const { role, companyId } = request.user;
-  //     const { appId } = request.params;
-  //
-  //     if (!hasPermission(role, 'App-Delete')) {
-  //       throw new HttpException(ErrorCodeString.NO_PERMISSION);
-  //     }
-  //
-  //     await prisma.app.deleteMany({
-  //       where: {
-  //         companyId,
-  //         id: appId,
-  //       },
-  //     });
-  //
-  //     return reply.status(204).send();
-  //   },
-  // );
+  fastify.delete<SchemaRoute<typeof CorrectionDeleteSchema>>(
+    '/:studentApplicationId',
+    { schema: CorrectionDeleteSchema },
+    async (request, reply) => {
+      const { role, companyId } = request.user;
+      const { studentApplicationId } = request.params;
+      const { resetApplication } = request.body;
+
+      if (!hasPermission(role, 'Correction-Delete')) {
+        throw new HttpException(ErrorCodeString.NO_PERMISSION);
+      }
+
+      await prisma.studentApplication.findFirstOrThrow({
+        where: { id: studentApplicationId, application: { companyId } }, // check company
+      });
+
+      await prisma.studentApplicationQuestion.deleteMany({
+        where: { studentApplicationId },
+      });
+
+      if (resetApplication) {
+        await prisma.studentApplication.update({
+          data: {
+            startedAt: null,
+            submittedAt: null,
+          },
+          where: { id: studentApplicationId },
+        });
+      } else {
+        await prisma.studentApplication.delete({
+          where: { id: studentApplicationId },
+        });
+      }
+
+      return reply.status(204).send(null);
+    },
+  );
 }

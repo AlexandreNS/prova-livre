@@ -51,6 +51,7 @@ export async function listStudentApplications(companyId: number, studentId: numb
 
     return [
       {
+        id: null,
         status:
           application.endedAt <= new Date()
             ? StudentApplicationStatus.ENDED
@@ -93,6 +94,7 @@ export async function listStudentApplications(companyId: number, studentId: numb
                 : StudentApplicationStatus.WAITING);
 
     studentApplicationsResult.push({
+      id: studentApplication.id,
       status,
       studentScore: status === StudentApplicationStatus.SUBMITTED ? studentScoreSum : null,
       startedAt: studentApplication.startedAt,

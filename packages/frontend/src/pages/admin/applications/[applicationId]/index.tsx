@@ -30,7 +30,8 @@ export default function Page() {
         <ListGroup
           mt="1gap"
           data={[
-            { label: 'Avaliação', value: application?.exam?.name, xs: 12, md: 'flex' },
+            { label: 'ID da Prova', value: application?.exam?.id, xs: 12, md: 'auto' },
+            { label: 'Prova', value: application?.exam?.name, xs: 12, md: 'flex' },
             'break',
             { label: 'Início', value: format(application?.startedAt, true), xs: 12, md: 'flex' },
             { label: 'Término', value: format(application?.endedAt, true), xs: 12, md: 'flex' },

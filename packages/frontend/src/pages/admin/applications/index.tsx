@@ -16,6 +16,7 @@ import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import useQueryParams from '@prova-livre/frontend/hooks/useQueryParams';
 import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
+import { humanize } from '@prova-livre/shared/helpers/date.helper';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { type RbkPointerEvent, useToaster } from '@react-bulk/core';
 import { Box, Button, Tooltip } from '@react-bulk/web';
@@ -82,15 +83,21 @@ export default function Page() {
               {
                 xs: 12,
                 md: 'flex',
-                label: 'Avaliação',
+                label: 'Prova',
                 value: application.exam?.name,
               },
               'break',
               {
                 xs: 12,
                 md: 'flex',
-                label: 'Turmas',
-                // value: application.class?.name,
+                label: 'Início',
+                value: humanize(application.startedAt),
+              },
+              {
+                xs: 12,
+                md: 'flex',
+                label: 'Término',
+                value: humanize(application.endedAt),
               },
             ]}
             right={

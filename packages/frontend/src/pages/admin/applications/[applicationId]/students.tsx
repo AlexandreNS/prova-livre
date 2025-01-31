@@ -6,6 +6,7 @@ import React, { useState } from 'react';
 import CopyButton from '@prova-livre/frontend/components/CopyButton';
 import Icon from '@prova-livre/frontend/components/Icon';
 import InputFetch from '@prova-livre/frontend/components/InputFetch';
+import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import ListGroup from '@prova-livre/frontend/components/ListGroup';
 import Pagination from '@prova-livre/frontend/components/Pagination';
 import State from '@prova-livre/frontend/components/State';
@@ -26,7 +27,7 @@ import {
 import { humanize } from '@prova-livre/shared/helpers/date.helper';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { validate } from '@prova-livre/shared/helpers/form.helper';
-import { type AnyObject, type RbkFormEvent, useToaster } from '@react-bulk/core';
+import { type AnyObject, type RbkFormEvent, type RbkPointerEvent, useToaster } from '@react-bulk/core';
 import { Box, Button, Card, Collapse, Divider, Form, Grid, Modal, Text, Tooltip } from '@react-bulk/web';
 
 export default function Page() {
@@ -37,10 +38,11 @@ export default function Page() {
     page: 1,
   });
 
-  const [hasReadPermission, hasWritePermission] = hasPermissionList(
+  const [hasReadPermission, hasWritePermission, hasCorrectionDeletePermission] = hasPermissionList(
     user?.role,
     'Application-Read',
     'Application-Write',
+    'Correction-Delete',
   );
 
   const [isModalAddVisible, setIsModalAddVisible] = useState(false);
@@ -69,6 +71,25 @@ export default function Page() {
     try {
       setIsModalAddVisible(false);
       await ApiAdmin.post(`/applications/${applicationId}/students`, data);
+      await revalidateStudents();
+    } catch (err) {
+      toaster.error(getError(err));
+    }
+  };
+
+  const handleDeleteStudentApplication = async (e: RbkPointerEvent, data: AnyObject) => {
+    if (data.resetApplication && !confirm('Deseja reiniciar a avaliação e remover todas as repostas do estudante?')) {
+      return;
+    }
+
+    if (!data.resetApplication && !confirm('Deseja remover a avaliação do estudante?')) {
+      return;
+    }
+
+    const studentApplicationId = data.id;
+
+    try {
+      await ApiAdmin.delete(`/corrections/${studentApplicationId}`, { data });
       await revalidateStudents();
     } catch (err) {
       toaster.error(getError(err));
@@ -131,7 +152,70 @@ export default function Page() {
                     shadow={1}
                     data={[
                       {
-                        label: `Tentativa ${index + 1}`,
+                        label: (
+                          <Box flex row>
+                            <Text alignSelf="flex-end" mr={2} variant="secondary">
+                              {studentApplication.id ? `#${studentApplication.id}` : '[Inscrição Provisória]'}
+                            </Text>
+                            <Text bold mr={1}>
+                              Tentativa {index + 1}
+                            </Text>
+                          </Box>
+                        ),
+                      },
+                      {
+                        label: studentApplication.id ? (
+                          <Box row m="-0.5gap">
+                            {[
+                              StudentApplicationStatus.AWAITING_CORRECTION,
+                              StudentApplicationStatus.SUBMITTED,
+                            ].includes(studentApplication.status as any) ? (
+                              <Tooltip title="Ver">
+                                <LinkChild href={`/admin/corrections/${studentApplication.id}/basic`} target="_blank">
+                                  <Button
+                                    circular
+                                    variant="text"
+                                    startAddon={({ color }) => (
+                                      <Icon color={color} name="ArrowSquareOut" weight="bold" />
+                                    )}
+                                  />
+                                </LinkChild>
+                              </Tooltip>
+                            ) : null}
+                            {studentApplication.id && studentApplication.startedAt && hasCorrectionDeletePermission ? (
+                              <Tooltip title="Reiniciar Avaliação">
+                                <Button
+                                  circular
+                                  color="error"
+                                  startAddon={({ color }) => <Icon color={color} name="Eraser" weight="bold" />}
+                                  variant="text"
+                                  onPress={(e) =>
+                                    handleDeleteStudentApplication(e, {
+                                      id: studentApplication.id,
+                                      resetApplication: true,
+                                    })
+                                  }
+                                />
+                              </Tooltip>
+                            ) : null}
+                            {studentApplication.id && hasCorrectionDeletePermission ? (
+                              <Tooltip title="Remover Avaliação">
+                                <Button
+                                  circular
+                                  color="error"
+                                  startAddon={({ color }) => <Icon color={color} name="Trash" weight="bold" />}
+                                  variant="text"
+                                  onPress={(e) =>
+                                    handleDeleteStudentApplication(e, {
+                                      id: studentApplication.id,
+                                      resetApplication: false,
+                                    })
+                                  }
+                                />
+                              </Tooltip>
+                            ) : null}
+                          </Box>
+                        ) : null,
                       },
                       'break',
                       {

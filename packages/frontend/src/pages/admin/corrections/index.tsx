@@ -1,5 +1,7 @@
 import type { SchemaQueryParams, SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
+import React from 'react';
+
 import Icon from '@prova-livre/frontend/components/Icon';
 import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import ListGroup from '@prova-livre/frontend/components/ListGroup';
@@ -13,7 +15,7 @@ import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import { CorrectionListSchema } from '@prova-livre/shared/dtos/admin/correction/correction.dto';
 import { distance, humanize } from '@prova-livre/shared/helpers/date.helper';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
-import { Badge, Box, Button, Select, Tooltip } from '@react-bulk/web';
+import { Badge, Box, Button, Select, Text, Tooltip } from '@react-bulk/web';
 
 export default function Page() {
   const { user } = useAdminAuth();
@@ -61,8 +63,24 @@ export default function Page() {
             mt="1gap"
             data={[
               {
+                xs: 12,
+                md: 'flex',
                 label: 'Avaliado',
-                value: studentApplication.student.name || '[sem nome]',
+                value: (
+                  <Box row alignItems="flex-end">
+                    <Text mr={2} variant="secondary">
+                      #{studentApplication.student.id}
+                    </Text>
+                    <Text mr={2}>{studentApplication.student.name || '[sem nome]'}</Text>
+                    <Text mr={2} variant="secondary">{`<${studentApplication.student.email}>`}</Text>
+                  </Box>
+                ),
+              },
+              {
+                xs: 12,
+                md: 'flex',
+                label: 'Prova',
+                value: studentApplication.application.exam.name,
               },
               {
                 value: studentApplication.isCorrected ? (
@@ -72,6 +90,11 @@ export default function Page() {
                 ),
               },
               'break',
+              {
+                minw: 100,
+                label: 'ID',
+                value: studentApplication.id,
+              },
               {
                 xs: 12,
                 md: 'flex',
@@ -104,6 +127,15 @@ export default function Page() {
                     </LinkChild>
                   </Tooltip>
                 )}
+                <Tooltip position="left" title="Acessar Aplicação de Prova">
+                  <LinkChild href={`/admin/applications/${studentApplication.application.id}`} target="_blank">
+                    <Button
+                      circular
+                      startAddon={({ color }) => <Icon color={color} name="ArrowSquareOut" weight="bold" />}
+                      variant="text"
+                    />
+                  </LinkChild>
+                </Tooltip>
               </Box>
             }
           />

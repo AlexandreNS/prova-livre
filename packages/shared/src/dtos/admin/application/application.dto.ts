@@ -142,6 +142,7 @@ export const ApplicationStudentsListSchema = {
                 items: {
                   type: 'object',
                   properties: {
+                    id: { type: ['number', 'null'] },
                     status: { type: 'string', enum: Object.values(StudentApplicationStatus) },
                     startedAt: { type: ['string', 'null'] },
                     submittedAt: { type: ['string', 'null'] },
