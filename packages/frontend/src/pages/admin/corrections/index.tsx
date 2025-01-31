@@ -1,4 +1,3 @@
-import type { ApplicationGetSchema } from '@prova-livre/shared/dtos/admin/application/application.dto';
 import type { SchemaQueryParams, SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
 import Icon from '@prova-livre/frontend/components/Icon';

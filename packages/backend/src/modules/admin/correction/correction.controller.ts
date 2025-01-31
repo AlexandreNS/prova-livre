@@ -37,11 +37,19 @@ export default async function CorrectionController(fastify: FastifyInstance) {
             application: { companyId }, // check company
             submittedAt: { not: null },
 
-            studentApplicationQuestions: cast(isCorrected, () => ({
-              some: {
-                studentScore: isCorrected ? { not: null } : null,
-              },
-            })),
+            studentApplicationQuestions: cast(isCorrected, () =>
+              isCorrected
+                ? {
+                    every: {
+                      studentScore: { not: null },
+                    },
+                  }
+                : {
+                    some: {
+                      studentScore: null,
+                    },
+                  },
+            ),
             OR: cast(search, () => [
               {
                 student: {

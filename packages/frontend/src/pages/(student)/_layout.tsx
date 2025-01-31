@@ -1,40 +1,34 @@
 import { Outlet, useLocation } from 'react-router-dom';
 
-import AdminHeader from '@prova-livre/frontend/components/AdminHeader';
-import AdminSidebar from '@prova-livre/frontend/components/AdminSidebar';
-import { AdminAuthProvider } from '@prova-livre/frontend/contexts/AdminAuthContext';
+import StudentHeader from '@prova-livre/frontend/components/StudentHeader';
 import { LayoutProvider } from '@prova-livre/frontend/contexts/LayoutContext';
-import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
+import { StudentAuthProvider } from '@prova-livre/frontend/contexts/StudentAuthContext';
 import useParams from '@prova-livre/frontend/hooks/useParams';
+import useStudentAuth from '@prova-livre/frontend/hooks/useStudentAuth';
 import { Navigate } from '@prova-livre/frontend/router';
 import { number } from '@prova-livre/shared/helpers/number.helper';
 import { Box, Scrollable } from '@react-bulk/web';
 
-function AdminLayout() {
-  const { status } = useAdminAuth();
+function StudentLayout() {
+  const { status } = useStudentAuth();
   const { pathname } = useLocation();
   const { showHeader = 1 } = useParams();
 
-  const publics = ['/admin/login'];
+  const publics = ['/login', '/forgot-password', '/reset-password'];
 
   if (publics.includes(pathname)) {
     return <Outlet />;
   }
 
   if (status === 'unauthenticated') {
-    return <Navigate to="/admin/login" />;
+    return <Navigate to="/login" />;
   }
 
   return (
     <LayoutProvider>
-      {Boolean(number(showHeader)) && <AdminHeader />}
+      {Boolean(number(showHeader)) && <StudentHeader />}
 
       <Box flex noWrap row>
-        {Boolean(number(showHeader)) && (
-          <Box>
-            <AdminSidebar />
-          </Box>
-        )}
         <Box flex>
           <Scrollable component="main" contentInset="1gap">
             <Outlet />
@@ -47,8 +41,8 @@ function AdminLayout() {
 
 export default function Provider() {
   return (
-    <AdminAuthProvider>
-      <AdminLayout />
-    </AdminAuthProvider>
+    <StudentAuthProvider>
+      <StudentLayout />
+    </StudentAuthProvider>
   );
 }

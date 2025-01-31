@@ -18,7 +18,7 @@ import { firstLast } from '@prova-livre/shared/helpers/string.helper';
 import { type RbkPointerEvent, useToaster } from '@react-bulk/core';
 import { Box, Button, Card, Divider, Dropdown, Grid, ListItem, Text, Tooltip } from '@react-bulk/web';
 
-export default function Header() {
+export default function AdminHeader() {
   const { user, company: authCompany, logout, setToken } = useAdminAuth();
   const { isMobile, drawer, mode, setMode } = useLayout();
   const navigate = useNavigate();

@@ -1,6 +1,6 @@
 import type { ArrayValues } from '@prova-livre/shared/types/util.type';
 
-export const ROLES = ['su', 'owner', 'admin', 'editor', 'tutor', 'viewer'] as const;
+export const ROLES = ['su', 'owner', 'admin', 'editor', 'tutor', 'viewer', 'student'] as const;
 
 export const PERMISSIONS = {
   'Api-Docs': ['owner', 'admin'],

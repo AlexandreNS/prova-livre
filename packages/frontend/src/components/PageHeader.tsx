@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 
 import Icon from '@prova-livre/frontend/components/Icon';
 import LinkChild from '@prova-livre/frontend/components/LinkChild';
+import { MODULE } from '@prova-livre/frontend/constants/module.constant';
 import useTabMatch from '@prova-livre/frontend/hooks/useTabMatch';
 import { Box, Button, Card, Grid, Input, Scrollable, Text, Tooltip } from '@react-bulk/web';
 
@@ -25,6 +26,7 @@ export default function PageHeader({ tabs, title, subtitle, children, onSearch }
 
   const hasHistory = window.history.length > 1;
   const backURL = tabURL.split('/').slice(0, -1).join('/');
+  const hasBackButton = MODULE === 'admin' ? backURL !== '/admin' : !!backURL;
 
   const filteredTabs = (tabs ?? []).filter(Boolean) as TabItem[];
 
@@ -71,7 +73,7 @@ export default function PageHeader({ tabs, title, subtitle, children, onSearch }
   return (
     <Card corners={0} m="-1gap" mb={0} position="sticky" t={0} zIndex={4}>
       <Grid row alignItems="center" gap={0.5}>
-        {backURL !== '/admin' && (
+        {hasBackButton && (
           <Box ml={-3}>
             <Tooltip title="Voltar">
               <LinkChild href={!hasHistory ? backURL : undefined}>

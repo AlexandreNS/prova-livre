@@ -37,6 +37,9 @@ export async function listStudentApplications(companyId: number, studentId: numb
         },
       },
     },
+    include: {
+      application: true,
+    },
   });
 
   if (!applicationClass && studentApplications.length === 0) {
@@ -44,7 +47,18 @@ export async function listStudentApplications(companyId: number, studentId: numb
   }
 
   if (applicationClass && studentApplications.length === 0) {
-    return [{ status: 'waiting' }]; // todo: corrigir status para alunos com turmas
+    const { application } = applicationClass;
+
+    return [
+      {
+        status:
+          application.endedAt <= new Date()
+            ? StudentApplicationStatus.ENDED
+            : application.startedAt <= new Date()
+              ? StudentApplicationStatus.STARTED
+              : StudentApplicationStatus.WAITING,
+      },
+    ];
   }
 
   const studentApplicationsResult = [];
@@ -58,7 +72,7 @@ export async function listStudentApplications(companyId: number, studentId: numb
     let status;
     let studentScoreSum = 0;
     for (const saq of studentApplicationQuestions) {
-      if (saq.question.type === QuestionType.DISCURSIVE && saq.studentScore === null) {
+      if (saq.question.type === QuestionType.DISCURSIVE && saq.studentScore === null && isSubmitted) {
         status = StudentApplicationStatus.AWAITING_CORRECTION;
       }
       studentScoreSum += number(saq.studentScore);

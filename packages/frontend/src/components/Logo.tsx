@@ -1,20 +1,24 @@
-import { clamp } from '@prova-livre/shared/helpers/number.helper';
-import { Text } from '@react-bulk/web';
+import { MODULE } from '@prova-livre/frontend/constants/module.constant';
+import { Box, Image, Text } from '@react-bulk/web';
 
-export type LogoProps = {
-  size?: number;
-};
-
-export default function Logo({ size = 32 }: LogoProps) {
+export default function Logo() {
   return (
-    <Text
-      color="primary"
-      // fontSize={size}
-      // letterSpacing={size / 3}
-      lineHeight={1}
-      weight={`${clamp(Math.round((size * 26) / 100) * 100, 100, 900)}`}
-    >
-      Prova Livre
-    </Text>
+    <>
+      <Box row alignItems="end">
+        <Image alt="logo" source="/favicon.ico" w={18} />
+        <Text color="primary" fontSize="16px" lineHeight={1} ml={1} weight="700">
+          rova Livre
+        </Text>
+      </Box>
+      {MODULE === 'admin' ? (
+        <Text color="warning.dark" fontSize="12px" mt="0.5gap" weight="bold">
+          Área Administrativa
+        </Text>
+      ) : (
+        <Text color="primary.light" fontSize="12px" mt="0.5gap" weight="bold">
+          Área do Estudante
+        </Text>
+      )}
+    </>
   );
 }

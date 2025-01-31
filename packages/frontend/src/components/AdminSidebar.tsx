@@ -19,7 +19,7 @@ type MenuGroup = {
   title?: string;
 };
 
-export default function Sidebar() {
+export default function AdminSidebar() {
   const { user } = useAdminAuth();
   const { pathname } = useLocation();
   const { isMobile, drawer } = useLayout();

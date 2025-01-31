@@ -9,7 +9,7 @@ import swaggerPlugin from '@fastify/swagger';
 import swaggerUiPlugin from '@fastify/swagger-ui';
 import HttpException from '@prova-livre/backend/exceptions/http.exception';
 import AdminRoutes from '@prova-livre/backend/modules/admin/admin.routes';
-// import StudentRoutes from '@prova-livre/backend/modules/student/student.routes';
+import StudentRoutes from '@prova-livre/backend/modules/student/student.routes';
 import Logger from '@prova-livre/backend/services/Logger';
 import { number } from '@prova-livre/shared/helpers/number.helper';
 import Fastify, { type FastifyRequest } from 'fastify';
@@ -19,7 +19,7 @@ declare module '@fastify/jwt' {
     user: {
       companyId: number;
       id: number;
-      role: 'su' | UserRoleEnum;
+      role: 'student' | 'su' | UserRoleEnum;
     };
   }
 }
@@ -119,7 +119,7 @@ fastify.get('/', { schema: { security: [] } }, async (request, reply) => {
 });
 
 fastify.register(AdminRoutes, { prefix: '/admin' });
-// fastify.register(StudentRoutes, { prefix: '/student' });
+fastify.register(StudentRoutes, { prefix: '/student' });
 
 (async function main() {
   try {

@@ -4,6 +4,7 @@
 import { components, hooks, utils } from '@generouted/react-router/client'
 
 export type Path =
+  | `/`
   | `/admin`
   | `/admin/applications`
   | `/admin/applications/:applicationId`
@@ -35,6 +36,12 @@ export type Path =
   | `/admin/students`
   | `/admin/students/:studentId`
   | `/admin/students/:studentId/basic`
+  | `/applications/:applicationId`
+  | `/forgot-password`
+  | `/login`
+  | `/profile`
+  | `/profile/password`
+  | `/reset-password`
 
 export type Params = {
   '/admin/applications/:applicationId': { applicationId: string }
@@ -57,6 +64,7 @@ export type Params = {
   '/admin/questions/:questionId/options': { questionId: string }
   '/admin/students/:studentId': { studentId: string }
   '/admin/students/:studentId/basic': { studentId: string }
+  '/applications/:applicationId': { applicationId: string }
 }
 
 export type ModalPath = never
