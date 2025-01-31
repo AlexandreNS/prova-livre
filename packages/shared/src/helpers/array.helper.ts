@@ -28,6 +28,23 @@ export function shuffle<T>(items: T[]) {
   return copy;
 }
 
+function seedRandom(seed: number) {
+  let value = seed;
+  return function () {
+    value = Math.sin(value) * 10000;
+    return value - Math.floor(value);
+  };
+}
+
+export function shuffleSeed<T>(items: T[], seed: number) {
+  const random = seedRandom(seed);
+  for (let i = items.length - 1; i > 0; i--) {
+    const j = Math.floor(random() * (i + 1));
+    [items[i], items[j]] = [items[j], items[i]];
+  }
+  return items;
+}
+
 export function chunk<T>(items: T[], size: number) {
   return Array.from(
     {

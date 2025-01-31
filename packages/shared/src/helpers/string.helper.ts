@@ -155,3 +155,7 @@ export function firstLast(input: any) {
   const split = string(input).split(' ');
   return `${split.shift() ?? ''} ${split.pop() ?? ''}`.trim();
 }
+
+export function replaceFlags(html: string, replacements: Record<string, string>) {
+  return html.replace(/{{(.*?)}}/g, (match, key) => replacements[key] || match);
+}
