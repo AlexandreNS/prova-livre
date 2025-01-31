@@ -45,7 +45,7 @@ export default function Page() {
       value: examRules?.reduce((acc, curr) => number(curr.questionsCount) + acc, 0),
     },
     {
-      title: 'Questões Únicas',
+      title: 'Questões Fixas',
       value: examRules?.reduce((acc, curr) => (curr.questionId ? number(curr.questionsCount) : 0) + acc, 0),
     },
     {

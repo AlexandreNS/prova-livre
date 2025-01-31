@@ -1,8 +1,16 @@
 import { MODULE } from '@prova-livre/frontend/constants/module.constant';
 
 const LocalStorage = {
-  clear() {
-    localStorage.clear();
+  clear(allKeys = false) {
+    if (allKeys) {
+      return localStorage.clear();
+    }
+
+    Object.keys(localStorage).forEach((key) => {
+      if (key.startsWith(MODULE)) {
+        localStorage.removeItem(key);
+      }
+    });
   },
 
   remove(key: string) {

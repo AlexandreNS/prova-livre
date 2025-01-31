@@ -2,7 +2,7 @@ import type { SchemaBase } from '@prova-livre/shared/types/schema.type';
 
 export const ApplicationSchema = {
   type: 'object',
-  required: ['id', 'examId', 'startedAt', 'endedAt', 'attempts', 'limitTime', 'showAnswers'],
+  required: ['id', 'examId', 'startedAt', 'endedAt', 'attempts', 'limitTime', 'showAnswers', 'allowFeedback'],
   properties: {
     id: { type: 'number' },
     examId: { type: 'number' },
@@ -12,6 +12,7 @@ export const ApplicationSchema = {
     limitTime: { type: ['number', 'null'] },
     showAnswers: { type: 'boolean' },
     showScores: { type: 'boolean' },
+    allowFeedback: { type: 'boolean' },
     exam: {
       type: 'object',
       required: ['id', 'name'],

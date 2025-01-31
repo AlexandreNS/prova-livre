@@ -53,6 +53,11 @@ export default function Page() {
               value: application?.showScores,
               xs: 12,
             },
+            {
+              label: 'Avaliados podem enviar o feedback de prova',
+              value: application?.allowFeedback,
+              xs: 12,
+            },
           ]}
         />
       </State>

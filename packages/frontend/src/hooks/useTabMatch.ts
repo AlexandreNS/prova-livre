@@ -6,7 +6,7 @@ export default function useTabMatch() {
   const match = matches.at(-1)!;
   const paths = match.id.split('/');
 
-  const tabURL = match.pathname.split('/').slice(0, paths.length).join('/');
+  const tabURL = match.pathname.split('/').slice(0, paths.length).join('/').replace(/\/$/, '');
   const tabValue = (paths.at(-1) === 'index' ? '' : paths.at(-1)) ?? '';
 
   return { tabURL, tabValue };

@@ -97,6 +97,7 @@ export const CorrectionGetSchema = {
             properties: {
               id: { type: 'number' },
               answer: { type: ['string', 'null'] },
+              feedback: { type: ['string', 'null'] },
               questionScore: { type: 'number' },
               studentScore: { type: ['number', 'null'] },
               question: {

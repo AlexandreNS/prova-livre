@@ -28,7 +28,11 @@ export default function Page() {
 
   const [hasWritePermission] = hasPermissionList(user?.role, 'Application-Write');
 
-  const { data: application, state } = useRequest<SchemaRoute<typeof ApplicationGetSchema>>(
+  const {
+    data: application,
+    state,
+    revalidate,
+  } = useRequest<SchemaRoute<typeof ApplicationGetSchema>>(
     hasWritePermission && applicationId && `/applications/${applicationId}`,
     {
       noCache: true,
@@ -52,6 +56,7 @@ export default function Page() {
 
     try {
       const response = await ApiAdmin.save('/applications', applicationId, data);
+      await revalidate();
 
       navigate('/admin/applications/:applicationId', {
         params: { applicationId: response.data.id },
@@ -146,6 +151,15 @@ export default function Page() {
                   label="Avaliados podem visualizar a nota de cada questão após a correção"
                   mr="0.5gap"
                   name="showScores"
+                  size="small"
+                />
+              </Box>
+              <Box xs={12}>
+                <Switch
+                  checked={application?.allowFeedback}
+                  label="Avaliados podem enviar o feedback de prova"
+                  mr="0.5gap"
+                  name="allowFeedback"
                   size="small"
                 />
               </Box>

@@ -137,6 +137,13 @@ export default function Page() {
                           />
                         </Box>
                         <Box xs={12}>
+                          <InputHtml
+                            label="Feedback (opcional)"
+                            name="feedback"
+                            value={studentApplicationQuestion.feedback}
+                          />
+                        </Box>
+                        <Box xs={12}>
                           <Button align="end" type="submit">
                             Salvar Correção
                           </Button>

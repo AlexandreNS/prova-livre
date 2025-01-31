@@ -259,12 +259,13 @@ model Application {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  startedAt   DateTime
-  endedAt     DateTime
-  attempts    Int      @default(1)
-  limitTime   Int?
-  showAnswers Boolean  @default(false)
-  showScores  Boolean  @default(false)
+  startedAt     DateTime
+  endedAt       DateTime
+  attempts      Int      @default(1)
+  limitTime     Int?
+  showAnswers   Boolean  @default(false)
+  showScores    Boolean  @default(false)
+  allowFeedback Boolean  @default(false)
 
   examId Int
   exam   Exam @relation(fields: [examId], references: [id])
@@ -273,7 +274,7 @@ model Application {
   company   Company @relation(fields: [companyId], references: [id])
 
   applicationClasses  ApplicationClass[]
-  studentsApplication StudentApplication[]
+  studentApplications StudentApplication[]
 }
 
 model ApplicationClass {
@@ -295,8 +296,10 @@ model StudentApplication {
   updatedAt DateTime  @updatedAt
   deletedAt DateTime?
 
-  startedAt   DateTime?
-  submittedAt DateTime?
+  startedAt           DateTime?
+  submittedAt         DateTime?
+  feedback            Json?
+  descriptionFeedback String?   @db.Text
 
   applicationId Int
   application   Application @relation(fields: [applicationId], references: [id])
@@ -316,6 +319,7 @@ model StudentApplicationQuestion {
   questionScore Int
   studentScore  Int?
   answer        String? @db.Text
+  feedback      String? @db.Text
 
   studentApplicationId Int
   studentApplication   StudentApplication @relation(fields: [studentApplicationId], references: [id])
