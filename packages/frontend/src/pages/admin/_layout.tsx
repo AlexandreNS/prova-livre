@@ -15,7 +15,7 @@ function AdminLayout() {
   const { pathname } = useLocation();
   const { showHeader = 1 } = useParams();
 
-  const publics = ['/admin/login'];
+  const publics = ['/admin/login', '/admin/forgot-password', '/admin/reset-password'];
 
   if (publics.includes(pathname)) {
     return <Outlet />;

@@ -122,6 +122,7 @@ export default async function AuthController(fastify: FastifyInstance) {
         to: [student.email],
         subject: 'Redefinição de Senha',
         html: renderTemplateEmail('auth:reset-password', {
+          MODULE_TITLE: 'Área do Estudante',
           URL_RESET_PASSWORD: `${process.env.PROVA_LIVRE_WEB_URL}/reset-password?securityCode=${securityCode}`,
         }),
       });

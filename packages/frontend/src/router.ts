@@ -25,6 +25,7 @@ export type Path =
   | `/admin/exams/:examId`
   | `/admin/exams/:examId/basic`
   | `/admin/exams/:examId/questions`
+  | `/admin/forgot-password`
   | `/admin/login`
   | `/admin/profile`
   | `/admin/profile/password`
@@ -33,6 +34,7 @@ export type Path =
   | `/admin/questions/:questionId/basic`
   | `/admin/questions/:questionId/categories`
   | `/admin/questions/:questionId/options`
+  | `/admin/reset-password`
   | `/admin/students`
   | `/admin/students/:studentId`
   | `/admin/students/:studentId/basic`

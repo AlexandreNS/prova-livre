@@ -6,43 +6,43 @@ import InputPassword from '@prova-livre/frontend/components/InputPassword';
 import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import State from '@prova-livre/frontend/components/State';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
+import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import useQueryParams from '@prova-livre/frontend/hooks/useQueryParams';
-import useStudentAuth from '@prova-livre/frontend/hooks/useStudentAuth';
 import { Navigate } from '@prova-livre/frontend/router';
-import ApiStudent from '@prova-livre/frontend/services/ApiStudent';
+import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
 import {
   AuthResetPasswordSchema,
   AuthVerifyTokenResetPasswordSchema,
-} from '@prova-livre/shared/dtos/student/auth/auth.dto';
+} from '@prova-livre/shared/dtos/admin/auth/auth.dto';
 import { validate, yup } from '@prova-livre/shared/helpers/form.helper';
 import { type AnyObject, type RbkFormEvent } from '@react-bulk/core';
 import { Box, Button, Card, Divider, Form, Grid, Input, Modal, Text } from '@react-bulk/web';
 import { object } from 'dot-object';
 
 export default function Page() {
-  const { status } = useStudentAuth();
+  const { status } = useAdminAuth();
   const [modalMessage, setModalMessage] = useState<string>();
   const [params] = useQueryParams<SchemaBody<typeof AuthVerifyTokenResetPasswordSchema>>();
 
-  const [loadingStudent, setLoadingStudent] = useState(true);
+  const [loadingUser, setLoadingUser] = useState(true);
   const [loadingSubmit, setLoadingSubmit] = useState(false);
-  const [student, setStudent] = useState<SchemaResponse<typeof AuthVerifyTokenResetPasswordSchema> | null>(null);
+  const [user, setUser] = useState<SchemaResponse<typeof AuthVerifyTokenResetPasswordSchema> | null>(null);
 
   useEffect(() => {
     (async () => {
-      if (!loadingStudent) return;
+      if (!loadingUser) return;
 
       try {
-        const response = await ApiStudent.post<SchemaResponse<typeof AuthVerifyTokenResetPasswordSchema>>(
+        const response = await ApiAdmin.post<SchemaResponse<typeof AuthVerifyTokenResetPasswordSchema>>(
           '/auth/verify-token-reset-password',
           { securityCode: params.securityCode },
         );
-        setStudent(response.data);
+        setUser(response.data);
       } catch (err) {
         setModalMessage(getError(err));
       }
 
-      setLoadingStudent(false);
+      setLoadingUser(false);
     })();
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -70,7 +70,7 @@ export default function Page() {
 
     setLoadingSubmit(true);
     try {
-      await ApiStudent.post('/auth/reset-password', data);
+      await ApiAdmin.post('/auth/reset-password', data);
       e.form.clear();
 
       setLoadingSubmit(false);
@@ -82,10 +82,9 @@ export default function Page() {
 
   return (
     <>
-      <State loading={loadingStudent}>
+      <State loading={loadingUser}>
         <Box flex bg="primary">
           <Grid flex>
-            <Box md xs={{ display: 'none' }} />
             <Box bg="primary.dark" md="auto" xs={12}>
               <Box center flex p="3gap">
                 <Card corners={4} maxw={480} p="3gap" w="100%">
@@ -93,8 +92,8 @@ export default function Page() {
                     Prova Livre
                   </Text>
                   <Divider mx="-3gap" my={2} />
-                  <Text center color="primary.light" variant="subtitle">
-                    Área do Estudante
+                  <Text center color="warning.dark" variant="subtitle">
+                    Área Administrativa
                   </Text>
                   <Text mt="2gap" variant="title">
                     Redefinição de senha
@@ -107,7 +106,7 @@ export default function Page() {
                   <Form mt="1gap" onSubmit={handleResetPassword}>
                     <Grid gap>
                       <Box xs={12}>
-                        <Input disabled label="E-mail" value={student?.email} />
+                        <Input disabled label="E-mail" value={user?.email} />
                       </Box>
                       <Box xs={12}>
                         <InputPassword required autoComplete="new-password" label="Nova Senha" name="password" />
@@ -126,7 +125,7 @@ export default function Page() {
                         </Button>
                       </Box>
                       <Box xs={12}>
-                        <LinkChild href="/login">
+                        <LinkChild href="/admin/login">
                           <Button variant="text">Voltar para Login</Button>
                         </LinkChild>
                       </Box>
@@ -135,6 +134,7 @@ export default function Page() {
                 </Card>
               </Box>
             </Box>
+            <Box md xs={{ display: 'none' }} />
           </Grid>
         </Box>
 
@@ -144,7 +144,7 @@ export default function Page() {
           <Text>{modalMessage}</Text>
           <Divider mx="-1gap" my="1gap" />
           <Box alignItems="flex-end">
-            <LinkChild href="/login">
+            <LinkChild href="/admin/login">
               <Button>Voltar para Login</Button>
             </LinkChild>
           </Box>

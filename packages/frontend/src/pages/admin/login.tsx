@@ -1,4 +1,7 @@
+import React from 'react';
+
 import InputPassword from '@prova-livre/frontend/components/InputPassword';
+import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
 import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import { Navigate, useNavigate } from '@prova-livre/frontend/router';
@@ -29,7 +32,7 @@ export default function Page() {
         <Grid flex>
           <Box bg="primary.dark" md="auto" xs={12}>
             <Box center flex p="3gap">
-              <Card corners={4} maxw={400} p="3gap" w="100%">
+              <Card corners={4} maxw={480} p="3gap" w="100%">
                 <Text center color="primary" variant="h2">
                   Prova Livre
                 </Text>
@@ -54,8 +57,15 @@ export default function Page() {
                     <Box xs={12}>
                       <InputPassword label="Senha" name="password" placeholder="Digite sua senha" value="123" />
                     </Box>
+                    <Box flex alignItems="flex-start" xs={12}>
+                      <Box>
+                        <LinkChild href="/admin/forgot-password">
+                          <Button variant="text">Esqueceu sua senha?</Button>
+                        </LinkChild>
+                      </Box>
+                    </Box>
                     <Box xs={12}>
-                      <Button mt="1gap" size="large" type="submit">
+                      <Button size="large" type="submit">
                         Entrar
                       </Button>
                     </Box>
@@ -64,7 +74,7 @@ export default function Page() {
               </Card>
             </Box>
           </Box>
-          <Box md xs={12} />
+          <Box md xs={{ display: 'none' }} />
         </Grid>
       </Box>
     </>
