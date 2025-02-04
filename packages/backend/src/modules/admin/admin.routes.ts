@@ -7,9 +7,11 @@ import ClassController from '@prova-livre/backend/modules/admin/class/class.cont
 import CompanyController from '@prova-livre/backend/modules/admin/company/company.controller';
 import CorrectionController from '@prova-livre/backend/modules/admin/correction/correction.controller';
 import ExamController from '@prova-livre/backend/modules/admin/exam/exam.controller';
+import LoggerController from '@prova-livre/backend/modules/admin/logger/logger.controller';
 import MeController from '@prova-livre/backend/modules/admin/me/me.controller';
 import QuestionController from '@prova-livre/backend/modules/admin/question/question.controller';
 import StudentController from '@prova-livre/backend/modules/admin/student/student.controller';
+import SystemSettingsController from '@prova-livre/backend/modules/admin/system-settings/system-settings.controller';
 import UserController from '@prova-livre/backend/modules/admin/user/user.controller';
 
 export default async function AdminRoutes(fastify: FastifyInstance) {
