@@ -1,12 +1,12 @@
 import type { Prisma, Student } from '@prisma/client';
 import type { SchemaRoute } from '@prova-livre/shared/types/schema.type';
-import type { AnyObject } from '@prova-livre/shared/types/util.type';
 import type { FastifyInstance } from 'fastify';
 
 import prisma from '@prova-livre/backend/database';
 import paginate from '@prova-livre/backend/database/paginate';
 import HttpException from '@prova-livre/backend/exceptions/http.exception';
-import Logger from '@prova-livre/backend/services/Logger';
+import { sendEmailRegistration } from '@prova-livre/backend/modules/admin/student/student.repository';
+import { type templatesList } from '@prova-livre/backend/services/Mail';
 import { ErrorCodeString } from '@prova-livre/shared/constants/ErrorCode';
 import {
   StudentCreateSchema,
@@ -15,11 +15,8 @@ import {
   StudentListSchema,
   StudentUpdateSchema,
 } from '@prova-livre/shared/dtos/admin/student/student.dto';
-import { add } from '@prova-livre/shared/helpers/date.helper';
 import { hasPermission } from '@prova-livre/shared/helpers/feature.helper';
-import { random } from '@prova-livre/shared/helpers/string.helper';
 import { cast } from '@prova-livre/shared/helpers/util.helper';
-import argon2 from 'argon2';
 
 export default async function StudentController(fastify: FastifyInstance) {
   fastify.get<SchemaRoute<typeof StudentListSchema>>('/', { schema: StudentListSchema }, async (request, reply) => {
@@ -84,7 +81,12 @@ export default async function StudentController(fastify: FastifyInstance) {
           email: payload.email,
           studentCompanies: { some: { companyId } },
         },
-        include: { studentCompanies: { include: { company: true } } },
+        include: {
+          studentCompanies: {
+            where: { companyId },
+            include: { company: true },
+          },
+        },
       });
 
       if (studentExists) {
@@ -93,28 +95,19 @@ export default async function StudentController(fastify: FastifyInstance) {
         );
       }
 
-      const emailData: AnyObject = { type: 'add-company' };
+      let emailTemplate: keyof typeof templatesList = 'auth:add-company';
 
-      // criação do estudante caso não exista
-      let student = await prisma.student.upsert({
+      let student = await prisma.student.findFirst({
         where: { email: payload.email },
-        create: { ...payload },
-        update: {},
       });
 
-      if (!student.temporaryPassword) {
-        emailData.type = 'new-user';
+      // criação do estudante caso não exista
+      if (!student) {
+        emailTemplate = 'auth:new-user';
 
-        const temporaryPassword = random();
-        student = await prisma.student.update({
-          where: { id: student.id },
-          data: {
-            temporaryPassword: await argon2.hash(temporaryPassword),
-            tempPassExpiredAt: add(new Date(), { minutes: 5 }),
-          },
+        student = await prisma.student.create({
+          data: { ...payload },
         });
-
-        emailData.temporaryPassword = temporaryPassword;
       }
 
       // vinculação do estudante na instituição
@@ -133,10 +126,11 @@ export default async function StudentController(fastify: FastifyInstance) {
         });
       }
 
-      emailData.company = studentCompany.company.name;
-
-      // TODO: send email
-      Logger.log({ emailData }, 'log');
+      sendEmailRegistration({
+        template: emailTemplate,
+        student,
+        companyName: studentCompany.company.name,
+      });
 
       return reply.send(student);
     },

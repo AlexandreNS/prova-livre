@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Registro em nova instituição</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .button {
+      display: inline-block;
+      padding: 12px 20px;
+      margin-top: 20px;
+      font-size: 16px;
+      color: #ffffff !important;
+      background-color: #007BFF;
+      text-decoration: none;
+      border-radius: 5px;
+    }
+
+    .footer {
+      margin-top: 20px;
+      font-size: 12px;
+      color: #666;
+    }
+
+    .link-text {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #007BFF;
+      word-break: break-all;
+    }
+  </style>
+</head>
+<body>
+<div class="container">
+  <h2>Registro em nova instituição</h2>
+  <h3>{{MODULE_TITLE}}</h3>
+  <p>Olá, você foi adicionado na Instituição: {{COMPANY_NAME}} no sistema do <strong>Prova Livre</strong>.</p>
+  <p>Para acessar a nova Instituição, faça o login pelo link abaixo e faça a seleção por dentro da plataforma:</p>
+  <a href="{{URL_LOGIN}}" class="link-text">{{URL_LOGIN}}</a>
+</div>
+</body>
+</html>

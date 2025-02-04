@@ -1,5 +1,4 @@
-import type { StudentListSchema } from '@prova-livre/shared/dtos/admin/student/student.dto';
-import type { SchemaQueryParams, SchemaResponse, SchemaRoute } from '@prova-livre/shared/types/schema.type';
+import type { SchemaQueryParams, SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
 import React, { useState } from 'react';
 import { useDependentState } from 'react-state-hooks';
@@ -17,7 +16,7 @@ import useIdParam from '@prova-livre/frontend/hooks/useIdParam';
 import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
 import { ApplicationClassesCreateSchema } from '@prova-livre/shared/dtos/admin/application/application.dto';
-import { ClassListSchema, ClassStudentsCreateSchema } from '@prova-livre/shared/dtos/admin/class/class.dto';
+import { ClassListSchema } from '@prova-livre/shared/dtos/admin/class/class.dto';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { validate } from '@prova-livre/shared/helpers/form.helper';
 import { number } from '@prova-livre/shared/helpers/number.helper';

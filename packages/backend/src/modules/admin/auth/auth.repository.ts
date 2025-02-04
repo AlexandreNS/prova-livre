@@ -84,12 +84,13 @@ export async function jwtSign(reply: FastifyReply, userId: number, companyId: nu
   return token;
 }
 
-export function setCookie(reply: FastifyReply, token: string) {
+export function setCookie(reply: FastifyReply, token: string, expires?: Date) {
   reply.setCookie('token', token, {
     path: '/',
     secure: false,
     httpOnly: true,
     sameSite: false,
     signed: true,
+    expires: expires,
   });
 }

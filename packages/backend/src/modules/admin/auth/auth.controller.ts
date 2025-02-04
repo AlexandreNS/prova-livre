@@ -1,6 +1,7 @@
 import type { SchemaRoute } from '@prova-livre/shared/types/schema.type';
 import type { FastifyInstance } from 'fastify';
 
+import { UserRoleEnum } from '@prisma/client';
 import prisma from '@prova-livre/backend/database';
 import HttpException from '@prova-livre/backend/exceptions/http.exception';
 import {
@@ -9,16 +10,20 @@ import {
   jwtSign,
   jwtSignResetPassword,
   jwtVerifyResetPassword,
+  setCookie,
 } from '@prova-livre/backend/modules/admin/auth/auth.repository';
+import { getRolesAllowCreateCompanies } from '@prova-livre/backend/modules/admin/system-settings/system-settings.repository';
 import { renderTemplateEmail, sendMail } from '@prova-livre/backend/services/Mail';
 import {
   AuthCompanySignSchema,
+  AuthCookieSchema,
   AuthLoginSchema,
   AuthMeSchema,
   AuthRequestPasswordRecoverySchema,
   AuthResetPasswordSchema,
   AuthVerifyTokenResetPasswordSchema,
 } from '@prova-livre/shared/dtos/admin/auth/auth.dto';
+import { add } from '@prova-livre/shared/helpers/date.helper';
 import { random } from '@prova-livre/shared/helpers/string.helper';
 import argon2 from 'argon2';
 
@@ -48,9 +53,14 @@ export default async function AuthController(fastify: FastifyInstance) {
       select: {
         id: true,
       },
+      orderBy: { id: 'asc' },
     });
 
-    const token = await jwtSign(reply, user.id, company?.id);
+    if (!company) {
+      throw new HttpException('Usuário não possui vinculo em uma instituição', 403);
+    }
+
+    const token = await jwtSign(reply, user.id, company.id);
 
     await prisma.user.update({
       where: { id: user.id },
@@ -119,7 +129,7 @@ export default async function AuthController(fastify: FastifyInstance) {
       const hashedPass = random(10);
       const securityCode = jwtSignResetPassword(user.id, hashedPass);
 
-      await sendMail({
+      sendMail({
         to: [user.email],
         subject: 'Redefinição de Senha',
         html: renderTemplateEmail('auth:reset-password', {
@@ -138,6 +148,18 @@ export default async function AuthController(fastify: FastifyInstance) {
       return reply.status(204).send();
     },
   );
+
+  fastify.get<SchemaRoute<typeof AuthCookieSchema>>('/cookie', { schema: AuthCookieSchema }, async (request, reply) => {
+    const { token, redirect } = request.query;
+
+    setCookie(reply, token, add(new Date(), { hours: 24 }));
+
+    if (redirect) {
+      return reply.redirect(redirect);
+    }
+
+    return reply.send({ token });
+  });
 
   fastify.get<SchemaRoute<typeof AuthMeSchema>>('/me', { schema: AuthMeSchema }, async (request, reply) => {
     const { id: userId, companyId } = request.user;
@@ -164,12 +186,32 @@ export default async function AuthController(fastify: FastifyInstance) {
 
     const role = await getRole(userId, companyId);
 
+    const hasCreateCompanyPermission =
+      role === 'su' ||
+      (await prisma.userCompanyRole.count({
+        where: {
+          userId,
+          role: {
+            in: (await getRolesAllowCreateCompanies()).filter((value) => {
+              return Object.values(UserRoleEnum).includes(value as keyof typeof UserRoleEnum);
+            }) as (keyof typeof UserRoleEnum)[],
+          },
+        },
+      }));
+
     await prisma.user.update({
       where: { id: userId },
       data: { accessedAt: new Date() },
     });
 
-    return reply.send({ ...user, role, company });
+    return reply.send({
+      ...user,
+      role,
+      company,
+      permissions: {
+        createCompany: Boolean(hasCreateCompanyPermission),
+      },
+    });
   });
 
   fastify.post<SchemaRoute<typeof AuthCompanySignSchema>>(

@@ -5,6 +5,7 @@ import LinkChild, { type LinkChildProps } from '@prova-livre/frontend/components
 import Logo from '@prova-livre/frontend/components/Logo';
 import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import useLayout from '@prova-livre/frontend/hooks/useLayout';
+import ApiAdmin from '@prova-livre/frontend/services/ApiAdmin';
 import { hasPermission } from '@prova-livre/shared/helpers/feature.helper';
 import { Box, Divider, Drawer, ListItem, Scrollable, Text } from '@react-bulk/web';
 
@@ -20,7 +21,7 @@ type MenuGroup = {
 };
 
 export default function AdminSidebar() {
-  const { user } = useAdminAuth();
+  const { user, token } = useAdminAuth();
   const { pathname } = useLocation();
   const { isMobile, drawer } = useLayout();
 
@@ -35,7 +36,7 @@ export default function AdminSidebar() {
       ],
     },
     {
-      title: 'Cadastros',
+      title: 'Banco de Questões',
       menus: [
         {
           icon: 'Bookmark',
@@ -45,10 +46,15 @@ export default function AdminSidebar() {
         },
         {
           icon: 'List',
-          label: 'Banco de Questões',
+          label: 'Questões',
           url: '/admin/questions',
           hidden: !hasPermission(user?.role, 'Question-Read'),
         },
+      ],
+    },
+    {
+      title: 'Gestão de Estudantes',
+      menus: [
         {
           icon: 'Student',
           label: 'Estudantes',
@@ -61,6 +67,11 @@ export default function AdminSidebar() {
           url: '/admin/classes',
           hidden: !hasPermission(user?.role, 'Class-Read'),
         },
+      ],
+    },
+    {
+      title: 'Aplicação de Prova',
+      menus: [
         {
           icon: 'Note',
           label: 'Provas',
@@ -69,7 +80,7 @@ export default function AdminSidebar() {
         },
         {
           icon: 'CalendarPlus',
-          label: 'Aplicações de Prova',
+          label: 'Aplicações',
           url: '/admin/applications',
           hidden: !hasPermission(user?.role, 'Application-Read'),
         },
@@ -78,6 +89,51 @@ export default function AdminSidebar() {
           label: 'Correções',
           url: '/admin/corrections',
           hidden: !hasPermission(user?.role, 'Correction-Read'),
+        },
+      ],
+    },
+    {
+      title: 'Gestão de Usuários',
+      menus: [
+        {
+          icon: 'Buildings',
+          label: 'Instituições',
+          url: '/admin/companies',
+          hidden: !user?.permissions.createCompany,
+        },
+        {
+          icon: 'Users',
+          label: 'Usuários',
+          url: '/admin/users',
+          hidden: !hasPermission(user?.role, 'User-Read'),
+        },
+      ],
+    },
+    {
+      title: 'Sistema',
+      menus: [
+        {
+          icon: 'Gear',
+          label: 'Configurações',
+          url: '/admin/su/system-settings',
+          hidden: !hasPermission(user?.role, 'SystemSettings'),
+        },
+        {
+          icon: 'Notepad',
+          label: 'Logs',
+          url: '/admin/su/logger',
+          hidden: user?.role !== 'su',
+        },
+      ],
+    },
+    {
+      menus: [
+        {
+          icon: 'Books',
+          label: 'API Docs',
+          url: `${ApiAdmin.baseURL}/auth/cookie?token=${token}&redirect=/docs`,
+          target: '_blank',
+          hidden: !hasPermission(user?.role, 'Api-Docs'),
         },
       ],
     },

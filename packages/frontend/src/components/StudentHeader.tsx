@@ -2,7 +2,7 @@ import type { AuthCompanySignSchema } from '@prova-livre/shared/dtos/student/aut
 import type { CompanyListSchema } from '@prova-livre/shared/dtos/student/company/company.dto';
 import type { SchemaResponse, SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import Icon from '@prova-livre/frontend/components/Icon';
 import LinkChild from '@prova-livre/frontend/components/LinkChild';
@@ -14,18 +14,30 @@ import useRequest from '@prova-livre/frontend/hooks/useRequest';
 import useStudentAuth from '@prova-livre/frontend/hooks/useStudentAuth';
 import { useNavigate } from '@prova-livre/frontend/router';
 import ApiStudent from '@prova-livre/frontend/services/ApiStudent';
-import { firstLast } from '@prova-livre/shared/helpers/string.helper';
-import { type RbkPointerEvent, useToaster } from '@react-bulk/core';
-import { Box, Button, Card, Divider, Dropdown, Grid, ListItem, Text, Tooltip } from '@react-bulk/web';
+import { clamp, number } from '@prova-livre/shared/helpers/number.helper';
+import { color, firstLast } from '@prova-livre/shared/helpers/string.helper';
+import { type RbkPointerEvent, useTheme, useToaster } from '@react-bulk/core';
+import { Box, Button, Card, Divider, Dropdown, Grid, ListItem, Scrollable, Text } from '@react-bulk/web';
 
 export default function StudentHeader() {
   const { user, company: authCompany, logout, setToken } = useStudentAuth();
-  const { isMobile, drawer, mode, setMode } = useLayout();
+  const { isMobile, drawer } = useLayout();
   const navigate = useNavigate();
   const toaster = useToaster();
+  const theme = useTheme();
 
   const [isUserMenuVisible, setIsUserMenuVisible] = useState(false);
   const [visible, setVisible] = useState(false);
+  const [companiesEl, setCompaniesEl] = useState<HTMLElement>();
+
+  const [companiesElHeight, setCompaniesElHeight] = useState(0);
+  const [companiesScrollHeight, setCompaniesScrollHeight] = useState(0);
+
+  const updateCompaniesScrollHeight = () => {
+    if (companiesEl) {
+      setCompaniesScrollHeight(number(document.querySelector('main')?.offsetHeight));
+    }
+  };
 
   const { data: companies, state: companiesState } = useRequest<SchemaRoute<typeof CompanyListSchema>>('/companies');
 
@@ -45,6 +57,20 @@ export default function StudentHeader() {
       toaster.error(getError(err));
     }
   };
+
+  useEffect(() => {
+    updateCompaniesScrollHeight();
+    window.addEventListener('resize', updateCompaniesScrollHeight);
+    return () => {
+      window.removeEventListener('resize', updateCompaniesScrollHeight);
+    };
+  });
+
+  useEffect(() => {
+    if (!companiesEl) return;
+
+    setCompaniesElHeight(number(companiesEl.offsetHeight + theme.rem(1)));
+  }, [companiesEl, theme]);
 
   return (
     <Box component="header" bg="background" borderBottom="1px solid gray.main.25" p="1gap">
@@ -86,50 +112,58 @@ export default function StudentHeader() {
               w={280}
               onClose={() => setVisible(false)}
             >
-              <Card overflow="hidden" p={2}>
+              <Card overflow="hidden" p={0}>
                 <State {...companiesState}>
-                  {companies?.map((company, index) => {
-                    const isActive = company.id === authCompany?.id;
+                  <Scrollable
+                    contentInset="0.5gap"
+                    h={clamp(companiesScrollHeight, Math.min(companiesElHeight, 200), Math.min(companiesElHeight, 400))}
+                  >
+                    <Box ref={setCompaniesEl}>
+                      {companies?.map((company, index) => {
+                        const isActive = company.id === authCompany?.id;
 
-                    return (
-                      <ListItem
-                        key={company.id}
-                        chevron
-                        accessibility={{ label: `Trocar acesso para "${company.name}"` }}
-                        bg={isActive ? 'primary.main.15' : 'background'}
-                        className="list-item"
-                        mt={index ? 1 : 0}
-                        onPress={(e) => handleChangeCompany(e, company.id)}
-                      >
-                        <Box my={-2}>
-                          <Icon name="Buildings" size={20} weight={isActive ? 'bold' : 'regular'} />
-                        </Box>
-                        <Box flex>
-                          <Text
-                            bold={isActive}
-                            color={isActive ? 'primary' : 'text.secondary'}
-                            numberOfLines={2}
-                            variant="secondary"
+                        return (
+                          <ListItem
+                            key={company.id}
+                            chevron
+                            accessibility={{ label: `Trocar acesso para "${company.name}"` }}
+                            bg={isActive ? 'primary.main.15' : 'background'}
+                            className="list-item"
+                            mt={index ? 1 : 0}
+                            onPress={(e) => handleChangeCompany(e, company.id)}
                           >
-                            {company?.name}
-                          </Text>
-                        </Box>
-                      </ListItem>
-                    );
-                  })}
+                            <Box my={-2}>
+                              <Icon name="Buildings" size={20} weight={isActive ? 'bold' : 'regular'} />
+                            </Box>
+                            <Box flex>
+                              <Text
+                                bold={isActive}
+                                color={isActive ? 'primary' : 'text.secondary'}
+                                numberOfLines={2}
+                                variant="secondary"
+                              >
+                                {company?.name}
+                              </Text>
+                            </Box>
+                          </ListItem>
+                        );
+                      })}
+                    </Box>
+                  </Scrollable>
                 </State>
               </Card>
             </Dropdown>
           </Box>
         </Box>
 
-        <Box>
-          <Tooltip position="left" title={mode === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro'}>
-            <Button circular variant="text" onPress={() => setMode(mode === 'dark' ? 'light' : 'dark')}>
-              <Icon name={mode === 'dark' ? 'Sun' : 'Moon'} size={20} />
-            </Button>
-          </Tooltip>
-        </Box>
+        {/*TODO: fix student dark theme*/}
+        {/*<Box>*/}
+        {/*  <Tooltip position="left" title={mode === 'dark' ? 'Mudar para tema claro' : 'Mudar para tema escuro'}>*/}
+        {/*    <Button circular variant="text" onPress={() => setMode(mode === 'dark' ? 'light' : 'dark')}>*/}
+        {/*      <Icon name={mode === 'dark' ? 'Sun' : 'Moon'} size={20} />*/}
+        {/*    </Button>*/}
+        {/*  </Tooltip>*/}
+        {/*</Box>*/}
 
         <Box>
           <Button circular variant="text" onPress={() => setIsUserMenuVisible(true)}>
@@ -147,7 +181,11 @@ export default function StudentHeader() {
           </Box>
 
           <Box center>
-            <Box bg="primary" borderRadius={30} h={60} w={60} />
+            <Box center bg="primary" borderRadius={30} h={60} w={60}>
+              <Text color={theme.contrast(color(user?.email))} variant="title">
+                {user?.name?.[0]}
+              </Text>
+            </Box>
 
             <Text center mt="1gap" variant="subtitle">
               {firstLast(user?.name)}

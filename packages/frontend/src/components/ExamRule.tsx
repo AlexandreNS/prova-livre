@@ -35,7 +35,7 @@ import {
 export type ExamRuleRulesProps = {
   examId: number;
   examRule: Partial<SchemaType<typeof ExamRuleSchema>>;
-  mutate: any; // TODO: type with useRequest mutate
+  mutate: any;
   onRefresh: () => Promise<void>;
 };
 

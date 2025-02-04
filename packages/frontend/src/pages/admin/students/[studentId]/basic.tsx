@@ -1,5 +1,6 @@
 import type { SchemaRoute } from '@prova-livre/shared/types/schema.type';
 
+import Icon from '@prova-livre/frontend/components/Icon';
 import NoPermission from '@prova-livre/frontend/components/NoPermission';
 import State from '@prova-livre/frontend/components/State';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
@@ -12,7 +13,7 @@ import { StudentCreateSchema, type StudentGetSchema } from '@prova-livre/shared/
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { validate, yup } from '@prova-livre/shared/helpers/form.helper';
 import { type AnyObject, type RbkFormEvent, useToaster } from '@react-bulk/core';
-import { Box, Button, Card, Form, Grid, Input } from '@react-bulk/web';
+import { Box, Button, Card, Form, Grid, Input, Text } from '@react-bulk/web';
 import { object } from 'dot-object';
 
 export default function Page() {
@@ -23,13 +24,14 @@ export default function Page() {
 
   const [hasWritePermission] = hasPermissionList(user?.role, 'Student-Write');
 
-  const { data: student, state } = useRequest<SchemaRoute<typeof StudentGetSchema>>(
-    hasWritePermission && studentId && `/students/${studentId}`,
-    {
-      noCache: true,
-      autoRevalidate: false,
-    },
-  );
+  const {
+    data: student,
+    state,
+    revalidate: revalidateStudent,
+  } = useRequest<SchemaRoute<typeof StudentGetSchema>>(hasWritePermission && studentId && `/students/${studentId}`, {
+    noCache: true,
+    autoRevalidate: false,
+  });
 
   const handleSubmitStudent = async (e: RbkFormEvent, data: AnyObject) => {
     data = object(data);
@@ -51,6 +53,7 @@ export default function Page() {
     try {
       const response = await ApiAdmin.save('/students', studentId, data);
 
+      revalidateStudent();
       navigate('/admin/students/:studentId', {
         params: { studentId: response.data.id },
       });
@@ -69,6 +72,17 @@ export default function Page() {
     <>
       <State {...(studentId ? state : {})}>
         <Form onSubmit={handleSubmitStudent}>
+          {!studentId && (
+            <Card center noWrap row mt="1gap">
+              <Icon color="info" name="Info" size={20} weight="bold" />
+              <Box flex ml="1gap">
+                <Text color="info" weight="500">
+                  Após a adição um email de confirmação será enviado para o Estudante
+                </Text>
+              </Box>
+            </Card>
+          )}
+
           <Card mt="1gap">
             <Grid gap>
               <Box xs={12}>

@@ -76,7 +76,7 @@ export default function InputFetch({
   useEffect(() => {
     if (!selected) return;
     setSearch(stripTags(string(selected?.[labelAttr])));
-  }, [selected]);
+  }, [labelAttr, selected]);
 
   const handleBlur = useCallback(() => {
     if (selected) return;

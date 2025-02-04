@@ -18,7 +18,7 @@ export default function Layout() {
         tabs={[
           hasReadPermission && classId ? { value: '', label: 'Resumo' } : null,
           hasWritePermission && { value: 'basic', label: 'Dados' },
-          hasWritePermission && { value: 'students', label: 'Estudantes' },
+          hasWritePermission && classId ? { value: 'students', label: 'Estudantes' } : null,
         ]}
       />
 

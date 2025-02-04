@@ -21,7 +21,7 @@ export type StudentAuthUser = {
   email: string;
   id: number;
   name?: null | string;
-  role?: 'student'; // TODO: type
+  role?: 'student';
 };
 
 export type StudentAuthCompany = {
@@ -77,6 +77,7 @@ export function StudentAuthProvider({ children }: { children?: ReactElement }) {
 
     setToken(response?.data?.token || null);
     await revalidateMe();
+    LocalStorage.set('lastLogin', email);
   }
 
   async function logout() {

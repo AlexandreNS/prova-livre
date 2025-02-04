@@ -56,7 +56,7 @@ export const ExamCreateSchema = {
       title: { type: ['string', 'null'] },
       description: { type: ['string', 'null'] },
       minScore: { type: ['number', 'null'], minimum: 0 },
-      maxScore: { type: ['number', 'null'], minimum: 0 },
+      maxScore: { type: ['number', 'null'], minimum: 1 },
     },
   },
   response: {
@@ -132,7 +132,7 @@ export const ExamRulesCreateSchema = {
     type: 'object',
     required: ['score'],
     properties: {
-      questionsCount: { type: 'number' },
+      questionsCount: { type: 'number', minimum: 1 },
       score: { type: 'number', minimum: 0 },
       questionId: { type: ['number', 'null'] },
       questionType: {

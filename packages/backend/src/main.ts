@@ -9,8 +9,11 @@ import swaggerPlugin from '@fastify/swagger';
 import swaggerUiPlugin from '@fastify/swagger-ui';
 import HttpException from '@prova-livre/backend/exceptions/http.exception';
 import AdminRoutes from '@prova-livre/backend/modules/admin/admin.routes';
+import { getRole } from '@prova-livre/backend/modules/admin/auth/auth.repository';
 import StudentRoutes from '@prova-livre/backend/modules/student/student.routes';
 import Logger from '@prova-livre/backend/services/Logger';
+import { ErrorCodeString } from '@prova-livre/shared/constants/ErrorCode';
+import { hasPermission } from '@prova-livre/shared/helpers/feature.helper';
 import { number } from '@prova-livre/shared/helpers/number.helper';
 import Fastify, { type FastifyRequest } from 'fastify';
 
@@ -100,11 +103,42 @@ fastify.register(swaggerPlugin, {
       description: '',
       version: '0.1.0',
     },
+    securityDefinitions: {
+      AdminBearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+        description: 'Autenticação utilizando Authorization: Bearer',
+      },
+      AdminCookie: {
+        type: 'apiKey',
+        name: 'cookie',
+
+        in: 'header',
+        description: 'Autenticação utilizando cookie:token=',
+      },
+      StudentBearer: {
+        type: 'apiKey',
+        name: 'Authorization',
+        in: 'header',
+        description: 'Autenticação utilizando Authorization: Bearer',
+      },
+    },
   },
 });
 
 fastify.register(swaggerUiPlugin, {
   routePrefix: '/docs',
+  uiHooks: {
+    onRequest: async function (request) {
+      const { id: userId, companyId } = request.user;
+      const role = await getRole(userId, companyId);
+
+      if (!hasPermission(role, 'Api-Docs')) {
+        throw new HttpException(ErrorCodeString.NO_PERMISSION);
+      }
+    },
+  },
 });
 
 fastify.get('/', { schema: { security: [] } }, async (request, reply) => {

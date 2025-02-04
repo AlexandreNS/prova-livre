@@ -5,6 +5,7 @@ import LinkChild from '@prova-livre/frontend/components/LinkChild';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
 import useAdminAuth from '@prova-livre/frontend/hooks/useAdminAuth';
 import { Navigate, useNavigate } from '@prova-livre/frontend/router';
+import LocalStorage from '@prova-livre/frontend/services/LocalStorage';
 import { type AnyObject, type RbkFormEvent, useToaster } from '@react-bulk/core';
 import { Box, Button, Card, Divider, Form, Grid, Input, Text } from '@react-bulk/web';
 
@@ -12,6 +13,7 @@ export default function Page() {
   const { status, login } = useAdminAuth();
   const navigate = useNavigate();
   const toaster = useToaster();
+  const lastLogin = LocalStorage.get('lastLogin');
 
   const handleLogin = async (e: RbkFormEvent, data: AnyObject) => {
     try {
@@ -51,11 +53,11 @@ export default function Page() {
                         name="email"
                         placeholder="Digite seu e-mail"
                         type="email"
-                        value="admin@provalivre.xyz"
+                        value={lastLogin}
                       />
                     </Box>
                     <Box xs={12}>
-                      <InputPassword label="Senha" name="password" placeholder="Digite sua senha" value="123" />
+                      <InputPassword label="Senha" name="password" placeholder="Digite sua senha" />
                     </Box>
                     <Box flex alignItems="flex-start" xs={12}>
                       <Box>

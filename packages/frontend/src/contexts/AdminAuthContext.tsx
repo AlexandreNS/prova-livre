@@ -21,7 +21,10 @@ export type AdminAuthUser = {
   email: string;
   id: number;
   name: string;
-  role?: 'admin' | 'owner' | 'su' | 'tutor'; // TODO: type
+  permissions: {
+    createCompany: boolean;
+  };
+  role?: 'admin' | 'editor' | 'owner' | 'su' | 'tutor';
 };
 
 export type AdminAuthCompany = {
@@ -77,6 +80,7 @@ export function AdminAuthProvider({ children }: { children?: ReactElement }) {
 
     setToken(response?.data?.token || null);
     await revalidateMe();
+    LocalStorage.set('lastLogin', email);
   }
 
   async function logout() {

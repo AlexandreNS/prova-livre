@@ -19,6 +19,10 @@ export type Path =
   | `/admin/classes/:classId`
   | `/admin/classes/:classId/basic`
   | `/admin/classes/:classId/students`
+  | `/admin/companies`
+  | `/admin/companies/:companyId`
+  | `/admin/companies/:companyId/basic`
+  | `/admin/companies/:companyId/users`
   | `/admin/corrections`
   | `/admin/corrections/:studentApplicationId/basic`
   | `/admin/exams`
@@ -38,6 +42,11 @@ export type Path =
   | `/admin/students`
   | `/admin/students/:studentId`
   | `/admin/students/:studentId/basic`
+  | `/admin/su/logger`
+  | `/admin/su/system-settings`
+  | `/admin/users`
+  | `/admin/users/:userId`
+  | `/admin/users/:userId/basic`
   | `/applications/:applicationId`
   | `/forgot-password`
   | `/login`
@@ -56,6 +65,9 @@ export type Params = {
   '/admin/classes/:classId': { classId: string }
   '/admin/classes/:classId/basic': { classId: string }
   '/admin/classes/:classId/students': { classId: string }
+  '/admin/companies/:companyId': { companyId: string }
+  '/admin/companies/:companyId/basic': { companyId: string }
+  '/admin/companies/:companyId/users': { companyId: string }
   '/admin/corrections/:studentApplicationId/basic': { studentApplicationId: string }
   '/admin/exams/:examId': { examId: string }
   '/admin/exams/:examId/basic': { examId: string }
@@ -66,6 +78,8 @@ export type Params = {
   '/admin/questions/:questionId/options': { questionId: string }
   '/admin/students/:studentId': { studentId: string }
   '/admin/students/:studentId/basic': { studentId: string }
+  '/admin/users/:userId': { userId: string }
+  '/admin/users/:userId/basic': { userId: string }
   '/applications/:applicationId': { applicationId: string }
 }
 

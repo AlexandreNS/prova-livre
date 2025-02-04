@@ -26,6 +26,7 @@ export default async function paginate<ModelType, FindManyType>(
   const total = await model.count({
     ...options,
     include: undefined,
+    select: undefined,
   });
 
   options = options || ({} as FindManyType);

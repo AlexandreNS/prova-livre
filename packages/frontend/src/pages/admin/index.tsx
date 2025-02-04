@@ -1,9 +1,6 @@
-import { useTheme } from '@react-bulk/core';
 import { Box, Card, Grid, Text } from '@react-bulk/web';
 
 export default function Page() {
-  const theme = useTheme();
-
   return (
     <>
       <Grid gap>

@@ -4,7 +4,6 @@ export const ROLES = ['su', 'owner', 'admin', 'editor', 'tutor', 'viewer', 'stud
 
 export const PERMISSIONS = {
   'Api-Docs': ['owner', 'admin'],
-  'Api-Board': [],
 
   'Application-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Application-Write': ['owner', 'admin', 'editor'],
@@ -13,6 +12,9 @@ export const PERMISSIONS = {
   'Category-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Category-Write': ['owner', 'admin', 'editor'],
   'Category-Delete': ['owner', 'admin'],
+
+  'Company-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
+  'Company-Write': ['owner', 'admin'],
 
   'Correction-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Correction-Write': ['owner', 'admin', 'editor', 'tutor'],
@@ -33,6 +35,12 @@ export const PERMISSIONS = {
   'Student-Read': ['owner', 'admin', 'editor', 'tutor', 'viewer'],
   'Student-Write': ['owner', 'admin', 'editor', 'tutor'],
   'Student-Delete': ['owner', 'admin', 'editor'],
+
+  SystemSettings: [],
+
+  'User-Read': ['owner', 'admin'],
+  'User-Write': ['owner', 'admin'],
+  'User-Delete': ['owner', 'admin'],
 } as const;
 
 export function hasPermission(

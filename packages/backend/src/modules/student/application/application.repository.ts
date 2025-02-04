@@ -229,6 +229,9 @@ export async function generateStudentApplication(companyId: number, studentId: n
       companyId, // check company
       id: applicationId,
     },
+    include: {
+      exam: true,
+    },
   });
 
   const studentApplication = await prisma.studentApplication.findFirst({
@@ -276,11 +279,17 @@ export async function generateStudentApplication(companyId: number, studentId: n
     },
   });
 
+  const totalScore = examRules?.reduce((acc, curr) => number(curr.questionsCount) * number(curr.score) + acc, 0);
+
+  if (!application.exam.maxScore || totalScore !== application.exam.maxScore) {
+    throw new HttpException(`${ErrorCodeString.WRONG_EXAM_CONFIG} (E1).`);
+  }
+
   for (const examRule of examRules) {
     if (examRule.questionId) {
       // already added
       if (questions.find(({ questionId }) => examRule.questionId === questionId)) {
-        throw new HttpException(`${ErrorCodeString.WRONG_EXAM_CONFIG} (E1).`);
+        throw new HttpException(`${ErrorCodeString.WRONG_EXAM_CONFIG} (E2).`);
       }
 
       questions.push({
@@ -302,7 +311,7 @@ export async function generateStudentApplication(companyId: number, studentId: n
       },
     });
 
-    const examRuleQuestions = await prisma.question.findMany({
+    let examRuleQuestions = await prisma.question.findMany({
       where: {
         enabled: true,
         id: { notIn: questions.map(({ questionId }) => questionId) },
@@ -317,9 +326,10 @@ export async function generateStudentApplication(companyId: number, studentId: n
     });
 
     if (examRuleQuestions.length < examRule.questionsCount) {
-      throw new HttpException(`${ErrorCodeString.WRONG_EXAM_CONFIG} (E2).`);
+      throw new HttpException(`${ErrorCodeString.WRONG_EXAM_CONFIG} (E3).`);
     }
 
+    examRuleQuestions = shuffle(examRuleQuestions);
     for (let i = 0; i < examRule.questionsCount; i++) {
       questions.push({
         questionId: examRuleQuestions.shift()!.id,

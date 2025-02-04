@@ -43,7 +43,7 @@ export default function Page() {
   } = useRequest<SchemaRoute<typeof StudentListSchema>>(hasReadPermission && '/students', { params });
 
   const handleDeleteStudent = async (_: RbkPointerEvent, studentId: number) => {
-    if (!confirm('Deseja remover permanentemente a categoria?')) {
+    if (!confirm('Deseja remover permanentemente o estudante?')) {
       return;
     }
 

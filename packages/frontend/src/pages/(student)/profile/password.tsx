@@ -1,10 +1,12 @@
 import InputPassword from '@prova-livre/frontend/components/InputPassword';
 import { getError } from '@prova-livre/frontend/helpers/api.helper';
+import { useNavigate } from '@prova-livre/frontend/router';
 import ApiStudent from '@prova-livre/frontend/services/ApiStudent';
 import { type AnyObject, type RbkFormEvent, useToaster } from '@react-bulk/core';
 import { Box, Button, Card, Form, Grid } from '@react-bulk/web';
 
 export default function Page() {
+  const navigate = useNavigate();
   const toaster = useToaster();
 
   const handleSubmit = async (e: RbkFormEvent, data: AnyObject) => {
@@ -12,6 +14,7 @@ export default function Page() {
       await ApiStudent.put('/me/password', data);
 
       toaster.success('Os dados foram salvos.');
+      navigate('/profile');
     } catch (err) {
       toaster.error(getError(err));
     }

@@ -60,13 +60,6 @@ export default function Page() {
     autoRevalidate: false,
   });
 
-  const { data: feedback, revalidate: revalidateFeedback } = useRequest<
-    SchemaRoute<typeof ApplicationFeedbackGetSchema>
-  >(application?.id && `/applications/${application?.id}/feedback`, {
-    noCache: true,
-    autoRevalidate: false,
-  });
-
   // priorize NOT SUBMITTED student application
   // then, get the one with higher student score
   const current = studentApplications?.reduce(
@@ -79,6 +72,13 @@ export default function Page() {
           : prev,
     studentApplications?.at(-1),
   );
+
+  const { data: feedback, revalidate: revalidateFeedback } = useRequest<
+    SchemaRoute<typeof ApplicationFeedbackGetSchema>
+  >(current?.id && `/applications/${current?.id}/feedback`, {
+    noCache: true,
+    autoRevalidate: false,
+  });
 
   const isSubmitted = Boolean(current?.submittedAt);
   const isCorrected = isSubmitted && current?.questions?.every((question) => typeof question.studentScore === 'number');
@@ -200,13 +200,14 @@ export default function Page() {
     try {
       await ApiStudent.put(`/applications/${applicationId}`, data);
       await revalidate();
+
+      document.querySelector('main')?.scrollTo(0, 0);
     } catch (err) {
       toaster.error(getError(err));
     }
   };
 
   const handleSubmitFeedback = async (e: RbkFormEvent, data: AnyObject) => {
-    data.examId = exam?.id;
     data.feedback = feedbackTags;
 
     if (!feedbackTags?.length && !string(data.descriptionFeedback).trim()) {
@@ -216,7 +217,7 @@ export default function Page() {
     }
 
     try {
-      await ApiStudent.post(`/applications/${applicationId}/feedback`, data);
+      await ApiStudent.post(`/applications/${current?.id}/feedback`, data);
       await revalidateFeedback();
     } catch (err) {
       toaster.error(getError(err));
@@ -491,19 +492,9 @@ export default function Page() {
                           <Box mt="1gap">
                             <Box align="start" position="relative">
                               <Button
-                                color="warning.dark"
-                                corners={2}
-                                labelStyle={{ color: '#4D3A01' }}
-                                overflow="hidden"
-                                shadow={1}
+                                color="warning.light"
                                 size="large"
-                                startAddon={() => <Icon color="#4D3A01" name="Star" weight="fill" />}
-                                style={{
-                                  transition: 'all ease 0.3s',
-                                  borderColor: 'transparent',
-                                  background: 'linear-gradient(to right, #FDE08D, #E0A63A, #FDE08D)',
-                                  '&:hover': { scale: 1.02 },
-                                }}
+                                startAddon={({ color }) => <Icon color={color} name="Star" weight="fill" />}
                                 onPress={() => setIsFeedbackModalVisible(true)}
                               >
                                 Enviar Feedback da Avaliação
@@ -756,42 +747,34 @@ export default function Page() {
               </Text>
 
               <Grid center gap={0.5} mt="1gap">
-                {['Primeira Impressão', 'Instruções da Avaliação', 'Clareza das Informações', 'Satisfação Geral'].map(
-                  (tag, index) => {
-                    const isActive = feedbackTags.includes(tag);
+                {[
+                  'Clareza das Questões',
+                  'Relevância do Conteúdo',
+                  'Dificuldade Adequada',
+                  'Formato da Avaliação',
+                  'Suporte adequado',
+                ].map((tag, index) => {
+                  const isActive = feedbackTags.includes(tag);
 
-                    return (
-                      <Box key={index}>
-                        <Badge
-                          color={isActive ? 'primary' : 'gray.main.15'}
-                          labelStyle={{ color: isActive ? 'white' : 'gray.main' }}
-                          size={3}
-                          onPress={() => (isActive ? remove((item) => item === tag) : push(tag))}
-                        >
-                          {tag}
-                        </Badge>
-                      </Box>
-                    );
-                  },
-                )}
+                  return (
+                    <Box key={index}>
+                      <Badge
+                        color={isActive ? 'primary' : 'gray.main.15'}
+                        labelStyle={{ color: isActive ? 'white' : 'gray.main' }}
+                        size={3}
+                        onPress={() => (isActive ? remove((item) => item === tag) : push(tag))}
+                      >
+                        {tag}
+                      </Badge>
+                    </Box>
+                  );
+                })}
               </Grid>
 
               <Input multiline mt="2gap" name="descriptionFeedback" placeholder="Deixe aqui sua sugestão" rows={3} />
 
               <Box mt="2gap" mx="4gap">
-                <Button
-                  color="warning.dark"
-                  corners={2}
-                  labelStyle={{ color: '#4D3A01' }}
-                  overflow="hidden"
-                  size="large"
-                  type="submit"
-                  style={{
-                    transition: 'all ease 0.3s',
-                    borderColor: 'transparent',
-                    background: 'linear-gradient(to right, #FDE08D, #E0A63A, #FDE08D)',
-                  }}
-                >
+                <Button color="warning.light" corners={2} size="large" type="submit">
                   Enviar Feedback
                 </Button>
 

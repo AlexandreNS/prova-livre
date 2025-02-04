@@ -8,7 +8,6 @@ import {
   jwtSignResetPassword,
   jwtVerifyResetPassword,
 } from '@prova-livre/backend/modules/student/auth/auth.repository';
-import Logger from '@prova-livre/backend/services/Logger';
 import { renderTemplateEmail, sendMail } from '@prova-livre/backend/services/Mail';
 import {
   AuthCompanySignSchema,
@@ -47,7 +46,12 @@ export default async function AuthController(fastify: FastifyInstance) {
       select: {
         id: true,
       },
+      orderBy: { id: 'asc' },
     });
+
+    if (!company) {
+      throw new HttpException('Estudante não possui vinculo em uma instituição', 403);
+    }
 
     const token = await jwtSign(reply, student.id, company?.id);
 
@@ -118,7 +122,7 @@ export default async function AuthController(fastify: FastifyInstance) {
       const hashedPass = random(10);
       const securityCode = jwtSignResetPassword(student.id, hashedPass);
 
-      await sendMail({
+      sendMail({
         to: [student.email],
         subject: 'Redefinição de Senha',
         html: renderTemplateEmail('auth:reset-password', {

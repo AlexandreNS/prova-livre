@@ -4,7 +4,7 @@ export default createTheme({
   mode: 'dark',
 
   colors: {
-    primary: '#FF416B',
-    secondary: '#183a90',
+    primary: '#78AFFF',
+    secondary: '#FF416B',
   },
 });

@@ -14,7 +14,6 @@ import { ClassGetSchema } from '@prova-livre/shared/dtos/admin/class/class.dto';
 import { StudentListSchema } from '@prova-livre/shared/dtos/admin/student/student.dto';
 import { hasPermissionList } from '@prova-livre/shared/helpers/feature.helper';
 import { number } from '@prova-livre/shared/helpers/number.helper';
-import { flexProps } from '@react-bulk/core';
 import { Text } from '@react-bulk/web';
 
 export default function Page() {

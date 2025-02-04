@@ -9,8 +9,10 @@ type EmailData = {
   to: string[];
 };
 
-const templatesList = {
+export const templatesList = {
   'auth:reset-password': ['auth', 'reset-password.html'],
+  'auth:add-company': ['auth', 'add-company.html'],
+  'auth:new-user': ['auth', 'new-user.html'],
 } as const;
 
 export function renderTemplateEmail(template: keyof typeof templatesList, data?: Record<string, string>) {

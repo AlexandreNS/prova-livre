@@ -14,7 +14,6 @@ export type PaginationProps = {
   total?: number;
 };
 
-// TODO: limitar numero de paginas exibidas
 export default function Pagination({
   page,
   pages,
@@ -30,6 +29,11 @@ export default function Pagination({
   total = number(total);
   limit = number(limit);
 
+  const maxButtons = 3;
+
+  const startPage = Math.max(2, page - Math.floor(maxButtons / 2)); // Começa da página 2 (mantemos sempre a página 1)
+  const endPage = Math.min(pages - 1, startPage + maxButtons - 1); // Mantemos sempre a última página
+
   return (
     <Box style={!inline && { position: 'sticky', b: 0, m: '-1gap', mt: 'auto' }}>
       {!inline && <Divider mt="1gap" />}
@@ -41,19 +45,49 @@ export default function Pagination({
         <Box flex>
           {pages > 1 && (
             <Grid center gap={0.5}>
-              {Array.from({ length: pages }).map((_, index) => {
+              <Box key={1}>
+                <Button size="small" variant={page === 1 ? 'solid' : 'outline'} onPress={() => onChange?.({ page: 1 })}>
+                  1
+                </Button>
+              </Box>
+
+              {startPage > 2 && (
+                <Box>
+                  <Text>...</Text>
+                </Box>
+              )}
+
+              {/* Páginas intermediárias */}
+              {Array.from({ length: endPage - startPage + 1 }).map((_, index) => {
+                const pageNumber = startPage + index;
                 return (
-                  <Box key={index}>
+                  <Box key={pageNumber}>
                     <Button
                       size="small"
-                      variant={index + 1 === page ? 'solid' : 'outline'}
-                      onPress={() => onChange?.({ page: index + 1 })}
+                      variant={pageNumber === page ? 'solid' : 'outline'}
+                      onPress={() => onChange?.({ page: pageNumber })}
                     >
-                      {index + 1}
+                      {pageNumber}
                     </Button>
                   </Box>
                 );
               })}
+
+              {endPage < pages - 1 && (
+                <Box>
+                  <Text>...</Text>
+                </Box>
+              )}
+
+              <Box key={pages}>
+                <Button
+                  size="small"
+                  variant={page === pages ? 'solid' : 'outline'}
+                  onPress={() => onChange?.({ page: pages })}
+                >
+                  {pages}
+                </Button>
+              </Box>
             </Grid>
           )}
         </Box>

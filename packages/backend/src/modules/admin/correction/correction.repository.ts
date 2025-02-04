@@ -89,7 +89,7 @@ export async function getStudentApplication(companyId: number, studentApplicatio
       const questionOptions = [];
       for (const questionOption of question.questionOptions) {
         // verificar se vai mostrar o gabarito
-        if (!application.showAnswers || !studentApplication.submittedAt) {
+        if (!studentApplication.submittedAt) {
           // @ts-expect-error
           delete questionOption.isCorrect;
         }

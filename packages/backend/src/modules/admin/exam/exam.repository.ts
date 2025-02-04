@@ -34,7 +34,7 @@ export async function listExamRule(companyId: number, examId: number) {
         },
       },
     },
-    orderBy: { id: 'desc' },
+    orderBy: { id: 'asc' },
   });
 }
 

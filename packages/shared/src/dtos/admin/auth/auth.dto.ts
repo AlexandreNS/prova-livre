@@ -77,19 +77,41 @@ export const AuthVerifyTokenResetPasswordSchema = {
   },
 } as const satisfies SchemaFastify;
 
+export const AuthCookieSchema = {
+  tags: ['admin/auth'],
+  security: [],
+  querystring: {
+    type: 'object',
+    required: ['token'],
+    properties: {
+      token: { type: 'string' },
+      redirect: { type: 'string' },
+    },
+  },
+  response: {
+    200: {
+      type: 'object',
+      required: ['token'],
+      properties: {
+        token: { type: 'string' },
+      },
+    },
+  },
+} as const satisfies SchemaFastify;
+
 export const AuthMeSchema = {
   tags: ['admin/auth'],
   response: {
     200: {
       type: 'object',
-      required: ['id', 'name', 'email', 'role'],
+      required: ['id', 'name', 'email', 'role', 'permissions'],
       properties: {
         id: { type: 'number' },
         name: { type: 'string' },
         email: { type: 'string', format: 'email' },
         role: {
           type: 'string',
-          enum: ['su', 'owner', 'admin', 'tutor'],
+          enum: ['su', 'owner', 'admin', 'tutor', 'editor'],
         },
         company: {
           type: 'object',
@@ -97,6 +119,13 @@ export const AuthMeSchema = {
           properties: {
             id: { type: 'number' },
             name: { type: 'string' },
+          },
+        },
+        permissions: {
+          type: 'object',
+          required: ['createCompany'],
+          properties: {
+            createCompany: { type: 'boolean' },
           },
         },
       },

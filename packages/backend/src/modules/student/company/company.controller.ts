@@ -12,7 +12,7 @@ export default async function CompanyController(fastify: FastifyInstance) {
       where: {
         studentsCompany: { some: { studentId } },
       },
-      orderBy: { id: 'desc' },
+      orderBy: { id: 'asc' },
     });
 
     return reply.send(companies);
