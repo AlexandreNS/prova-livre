@@ -20,8 +20,10 @@ export default async function AdminRoutes(fastify: FastifyInstance) {
   fastify.register(CompanyController, { prefix: '/companies' });
   fastify.register(CorrectionController, { prefix: '/corrections' });
   fastify.register(ExamController, { prefix: '/exams' });
+  fastify.register(LoggerController, { prefix: '/logger' });
   fastify.register(MeController, { prefix: '/me' });
   fastify.register(QuestionController, { prefix: '/questions' });
   fastify.register(StudentController, { prefix: '/students' });
-  fastify.register(UserController, { prefix: '/users' }); // TODO TEMP
+  fastify.register(SystemSettingsController, { prefix: '/system-settings' });
+  fastify.register(UserController, { prefix: '/users' });
 }

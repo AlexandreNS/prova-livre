@@ -3,6 +3,22 @@ import type { Prisma } from '@prisma/client';
 import prisma from '../src/database';
 
 (async function main() {
+  const systemSettingsList = [
+    {
+      where: { id: 1 },
+      data: {
+        name: 'allow_other_users_to_create_companies',
+        description: 'Autorizar criação de Instituições por outros usuários',
+        value: '',
+        enabled: false,
+      },
+    },
+  ] as { data: Prisma.SystemSettingsCreateInput; where: Prisma.SystemSettingsWhereUniqueInput }[];
+
+  for (const { data, where } of systemSettingsList) {
+    await prisma.systemSettings.upsert({ where, create: data, update: data });
+  }
+
   const companyData = {
     name: 'Prova Livre - Matriz',
     slug: 'prova-livre-matriz',
@@ -34,6 +50,7 @@ import prisma from '../src/database';
       connectOrCreate: {
         where: { id: 2 },
         create: {
+          id: 2,
           companyId: 1,
           role: 'owner',
         },
@@ -55,6 +72,7 @@ import prisma from '../src/database';
       connectOrCreate: {
         where: { id: 3 },
         create: {
+          id: 3,
           companyId: 1,
           role: 'admin',
         },

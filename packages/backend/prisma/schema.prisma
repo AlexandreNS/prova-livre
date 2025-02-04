@@ -20,6 +20,18 @@ enum UserRoleEnum {
   viewer
 }
 
+model SystemSettings {
+  id        Int       @id @default(autoincrement())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+  deletedAt DateTime?
+
+  name        String  @unique
+  description String
+  value       String?
+  enabled     Boolean @default(false)
+}
+
 model Company {
   id        Int       @id @default(autoincrement())
   createdAt DateTime  @default(now())
