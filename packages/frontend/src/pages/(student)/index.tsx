@@ -87,7 +87,7 @@ export default function Page() {
           </Box>
 
           <Grid gap ml="1gap" mt="1gap">
-            {data.map(({ exam, application, studentApplications }, index) => {
+            {data.map(({ exam, application, studentApplications, status }, index) => {
               const studentApplication = studentApplications?.reduce(
                 (curr, prev) =>
                   (!curr?.submittedAt && curr?.status !== StudentApplicationStatus.EXPIRED) ||
@@ -109,7 +109,7 @@ export default function Page() {
                         endedAt={application.endedAt}
                         limitTime={application.limitTime}
                         startedAt={application.startedAt}
-                        status={studentApplication?.status}
+                        status={studentApplication?.status || status}
                         submittedAt={studentApplication?.submittedAt}
                       />
                     </Box>
@@ -121,7 +121,7 @@ export default function Page() {
                         <ApplicationActions
                           applicationId={application.id}
                           startedAt={application.startedAt}
-                          status={studentApplication?.status}
+                          status={studentApplication?.status || status}
                           title={exam.title}
                         />
                       </Box>

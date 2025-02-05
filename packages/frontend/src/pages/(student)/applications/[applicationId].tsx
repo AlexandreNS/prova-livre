@@ -85,7 +85,9 @@ export default function Page() {
   const hasMinScore = number(exam?.minScore) > 0;
   const limitTimeAt = add(isoUtcToLocal(current?.startedAt), { minutes: number(application?.limitTime) });
   const isExpired = number(application?.limitTime) > 0 && limitTimeAt < new Date();
-  const attemptsLeft = number(application?.attempts) - number(studentApplications?.length);
+  const attemptsLeft =
+    number(application?.attempts) -
+    number(studentApplications?.filter((studentApplication) => studentApplication.startedAt)?.length);
 
   useEffect(() => {
     if (!application?.limitTime) return;
