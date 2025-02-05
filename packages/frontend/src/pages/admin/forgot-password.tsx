@@ -70,13 +70,7 @@ export default function Page() {
                 <Form mt="1gap" onSubmit={handleRecoveryPassword}>
                   <Grid gap>
                     <Box xs={12}>
-                      <Input
-                        label="E-mail"
-                        name="email"
-                        placeholder="Digite seu e-mail"
-                        type="email"
-                        value="admin@provalivre.xyz"
-                      />
+                      <Input label="E-mail" name="email" placeholder="Digite seu e-mail" type="email" />
                     </Box>
                     <Box xs={12}>
                       <Button loading={loading} type="submit">
