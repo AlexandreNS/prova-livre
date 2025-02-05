@@ -11,6 +11,7 @@ import {
   jwtSignResetPassword,
   jwtVerifyResetPassword,
   setCookie,
+  superUserId,
 } from '@prova-livre/backend/modules/admin/auth/auth.repository';
 import { getRolesAllowCreateCompanies } from '@prova-livre/backend/modules/admin/system-settings/system-settings.repository';
 import { renderTemplateEmail, sendMail } from '@prova-livre/backend/services/Mail';
@@ -115,6 +116,14 @@ export default async function AuthController(fastify: FastifyInstance) {
       const user = await prisma.user.findFirst({
         where: {
           email,
+          OR: [
+            {
+              userCompanyRoles: { some: {} },
+            },
+            {
+              id: superUserId,
+            },
+          ],
         },
         select: {
           id: true,

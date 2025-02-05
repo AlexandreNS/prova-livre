@@ -5,8 +5,10 @@ import HttpException from '@prova-livre/backend/exceptions/http.exception';
 import argon2 from 'argon2';
 import * as jwt from 'jsonwebtoken';
 
+export const superUserId = 1;
+
 export function isSuperUser(userId: number) {
-  return userId === 1;
+  return userId === superUserId;
 }
 
 export async function getRole(userId: number, companyId?: number) {
@@ -50,7 +52,14 @@ export async function jwtVerifyResetPassword(token: string) {
     const user = await prisma.user.findFirstOrThrow({
       where: {
         id: payload.userId,
-        userCompanyRoles: { some: {} },
+        OR: [
+          {
+            userCompanyRoles: { some: {} },
+          },
+          {
+            id: superUserId,
+          },
+        ],
       },
       select: {
         id: true,

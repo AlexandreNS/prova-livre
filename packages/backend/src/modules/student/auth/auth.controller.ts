@@ -108,6 +108,7 @@ export default async function AuthController(fastify: FastifyInstance) {
       const student = await prisma.student.findFirst({
         where: {
           email,
+          studentCompanies: { some: {} },
         },
         select: {
           id: true,
