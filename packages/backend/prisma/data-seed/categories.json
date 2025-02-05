@@ -1,0 +1,42 @@
+[
+  {
+    "name": "Níveis de Dificuldade",
+    "allowMultipleSelection": true,
+    "subcategories": [
+      "Básico",
+      "Intermediário",
+      "Avançado",
+      "Expert"
+    ]
+  },
+  {
+    "name": "Disciplina",
+    "allowMultipleSelection": false,
+    "subcategories": [
+      "Matemática",
+      "Física",
+      "Química",
+      "Biologia",
+      "História",
+      "Geografia",
+      "Filosofia",
+      "Sociologia",
+      "Inglês",
+      "Educação Física",
+      "Artes",
+      "Redação",
+      "Ciências"
+    ]
+  },
+  {
+    "name": "Conteúdo Pedagógico",
+    "allowMultipleSelection": true,
+    "subcategories": [
+      "Aritmética",
+      "Álgebra",
+      "Geometria",
+      "Trigonometria",
+      "Probabilidade e Estatística"
+    ]
+  }
+]

@@ -1,0 +1,410 @@
+[
+  {
+    "description": "Qual é o resultado da soma 128 + 256?",
+    "type": "options",
+    "category": "Aritmética",
+    "options": [
+      {
+        "description": "384",
+        "isCorrect": true
+      },
+      {
+        "description": "356",
+        "isCorrect": false
+      },
+      {
+        "description": "400",
+        "isCorrect": false
+      },
+      {
+        "description": "512",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Se um número é divisível por 6, ele também deve ser divisível por quais números?",
+    "type": "options",
+    "category": "Aritmética",
+    "options": [
+      {
+        "description": "2 e 3",
+        "isCorrect": true
+      },
+      {
+        "description": "3 e 4",
+        "isCorrect": false
+      },
+      {
+        "description": "2 e 5",
+        "isCorrect": false
+      },
+      {
+        "description": "Apenas por 6",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Calcule o valor da expressão: (15 ÷ 3) + (20 ÷ 5)",
+    "type": "options",
+    "category": "Aritmética",
+    "options": [
+      {
+        "description": "11",
+        "isCorrect": true
+      },
+      {
+        "description": "9",
+        "isCorrect": false
+      },
+      {
+        "description": "10",
+        "isCorrect": false
+      },
+      {
+        "description": "12",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Explique como calcular o mínimo múltiplo comum (MMC) entre os números 12 e 18.",
+    "type": "discursive",
+    "maxLength": 300,
+    "category": "Aritmética"
+  },
+  {
+    "description": "João comprou 3 lápis por R$2,40. Qual é o preço de cada lápis?",
+    "type": "discursive",
+    "maxLength": 150,
+    "category": "Aritmética"
+  },
+  {
+    "description": "Resolva a equação: 2x + 5 = 15.",
+    "type": "discursive",
+    "maxLength": 10,
+    "category": "Álgebra"
+  },
+  {
+    "description": "Qual das seguintes expressões é equivalente a (x + 3)(x - 3)?",
+    "type": "options",
+    "category": "Álgebra",
+    "options": [
+      {
+        "description": "x² - 9",
+        "isCorrect": true
+      },
+      {
+        "description": "x² + 6x + 9",
+        "isCorrect": false
+      },
+      {
+        "description": "x² - 6x + 9",
+        "isCorrect": false
+      },
+      {
+        "description": "x² + 9",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Explique como resolver um sistema de equações lineares pelo método da substituição.",
+    "type": "discursive",
+    "maxLength": 50,
+    "category": "Álgebra"
+  },
+  {
+    "description": "Quais dos seguintes valores são raízes da equação x² - 5x + 6 = 0?",
+    "type": "options",
+    "category": "Álgebra",
+    "options": [
+      {
+        "description": "2",
+        "isCorrect": true
+      },
+      {
+        "description": "3",
+        "isCorrect": true
+      },
+      {
+        "description": "5",
+        "isCorrect": false
+      },
+      {
+        "description": "-2",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Qual é o resultado da expressão 3x - 2 quando x = 4?",
+    "type": "options",
+    "category": "Álgebra",
+    "options": [
+      {
+        "description": "10",
+        "isCorrect": false
+      },
+      {
+        "description": "9",
+        "isCorrect": false
+      },
+      {
+        "description": "12",
+        "isCorrect": true
+      },
+      {
+        "description": "8",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Qual é a soma dos ângulos internos de um triângulo?",
+    "type": "options",
+    "category": "Geometria",
+    "options": [
+      {
+        "description": "180°",
+        "isCorrect": true
+      },
+      {
+        "description": "360°",
+        "isCorrect": false
+      },
+      {
+        "description": "90°",
+        "isCorrect": false
+      },
+      {
+        "description": "270°",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Explique a diferença entre um polígono regular e um polígono irregular.",
+    "type": "discursive",
+    "maxLength": 300,
+    "category": "Geometria"
+  },
+  {
+    "description": "Quais das seguintes figuras possuem lados congruentes?",
+    "type": "options",
+    "category": "Geometria",
+    "options": [
+      {
+        "description": "Quadrado",
+        "isCorrect": true
+      },
+      {
+        "description": "Retângulo",
+        "isCorrect": false
+      },
+      {
+        "description": "Losango",
+        "isCorrect": true
+      },
+      {
+        "description": "Trapézio isósceles",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Se um círculo tem raio de 5 cm, qual é seu perímetro? (Considere π ≈ 3,14)",
+    "type": "discursive",
+    "maxLength": 100,
+    "category": "Geometria"
+  },
+  {
+    "description": "Quais destas formas tridimensionais possuem todas as faces como polígonos regulares?",
+    "type": "options",
+    "category": "Geometria",
+    "options": [
+      {
+        "description": "Cubo",
+        "isCorrect": true
+      },
+      {
+        "description": "Pirâmide de base quadrada",
+        "isCorrect": false
+      },
+      {
+        "description": "Tetraedro",
+        "isCorrect": true
+      },
+      {
+        "description": "Cilindro",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Qual é o valor de sen(30°)?",
+    "type": "options",
+    "maxLength": 50,
+    "category": "Trigonometria",
+    "options": [
+      {
+        "description": "1/2",
+        "isCorrect": true
+      },
+      {
+        "description": "√3/2",
+        "isCorrect": false
+      },
+      {
+        "description": "1",
+        "isCorrect": false
+      },
+      {
+        "description": "0",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Se um triângulo retângulo possui um ângulo de 45°, qual a relação entre os catetos?",
+    "type": "discursive",
+    "maxLength": 150,
+    "category": "Trigonometria"
+  },
+  {
+    "description": "Quais das seguintes expressões representam o valor de cos(60°)?",
+    "type": "options",
+    "maxLength": 50,
+    "category": "Trigonometria",
+    "options": [
+      {
+        "description": "1/2",
+        "isCorrect": true
+      },
+      {
+        "description": "√3/2",
+        "isCorrect": false
+      },
+      {
+        "description": "sen(30°)",
+        "isCorrect": true
+      },
+      {
+        "description": "tan(45°)",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Explique o que representa a tangente de um ângulo em um triângulo retângulo.",
+    "type": "discursive",
+    "maxLength": 200,
+    "category": "Trigonometria"
+  },
+  {
+    "description": "Quais das seguintes identidades trigonométricas são verdadeiras?",
+    "type": "options",
+    "maxLength": 100,
+    "category": "Trigonometria",
+    "options": [
+      {
+        "description": "sen²(x) + cos²(x) = 1",
+        "isCorrect": true
+      },
+      {
+        "description": "tan(x) = sen(x) / cos(x)",
+        "isCorrect": true
+      },
+      {
+        "description": "cos(2x) = 2cos²(x) - 1",
+        "isCorrect": true
+      },
+      {
+        "description": "sen(x) = cos(x)",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Qual a probabilidade de obter cara ao lançar uma moeda justa?",
+    "type": "options",
+    "category": "Probabilidade e Estatística",
+    "options": [
+      {
+        "description": "50%",
+        "isCorrect": true
+      },
+      {
+        "description": "25%",
+        "isCorrect": false
+      },
+      {
+        "description": "75%",
+        "isCorrect": false
+      },
+      {
+        "description": "100%",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Se um dado honesto de 6 faces é lançado uma vez, qual a probabilidade de obter um número ímpar?",
+    "type": "options",
+    "category": "Probabilidade e Estatística",
+    "options": [
+      {
+        "description": "1/2",
+        "isCorrect": true
+      },
+      {
+        "description": "1/3",
+        "isCorrect": false
+      },
+      {
+        "description": "2/3",
+        "isCorrect": false
+      },
+      {
+        "description": "1/6",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Explique o que significa o conceito de média aritmética e como ele é calculado.",
+    "type": "discursive",
+    "maxLength": 300,
+    "category": "Probabilidade e Estatística"
+  },
+  {
+    "description": "Um baralho comum contém 52 cartas. Qual a probabilidade de sortear uma carta de copas?",
+    "type": "options",
+    "category": "Probabilidade e Estatística",
+    "options": [
+      {
+        "description": "1/4",
+        "isCorrect": true
+      },
+      {
+        "description": "1/2",
+        "isCorrect": false
+      },
+      {
+        "description": "1/13",
+        "isCorrect": false
+      },
+      {
+        "description": "3/4",
+        "isCorrect": false
+      }
+    ]
+  },
+  {
+    "description": "Defina o conceito de desvio padrão e sua importância na Estatística.",
+    "type": "discursive",
+    "maxLength": 300,
+    "category": "Probabilidade e Estatística"
+  }
+]
