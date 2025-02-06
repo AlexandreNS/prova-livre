@@ -181,7 +181,7 @@ export default function InputFetch({
         required={required}
         startAddon={selectedId ? <Text variant="secondary">#{selectedId}</Text> : null}
         value={search ?? stripTags(selected?.[labelAttr])}
-        onBlur={handleBlur}
+        // onBlur={handleBlur}
         onChange={handleChangeSearch}
         onKeyDown={handleKeyDown}
         onSubmit={() => focusedItem && setSelectedId(focusedItem?.value)}
